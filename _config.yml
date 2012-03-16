@@ -1,0 +1,5 @@
+destination: ./_site
+
+expires:
+  html: 3600 # one hour
+  assets: 1314000 # one year
