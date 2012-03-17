@@ -14,22 +14,17 @@ CONFIG = YAML::load_file(File.join(File.dirname(__FILE__), '_config.yml'))
 # points to our generated website directory
 PUBLIC = File.expand_path(File.join(File.dirname(__FILE__), 
                           CONFIG['destination'] || '_site'))
-puts PUBLIC
+
 # For cutting down on the boilerplate
 class BaseMiddleware
   def initialize(app)
     @app = app
   end
 
-  def call(env)
-    @app.call(env)
-  end
-
   def each(&block)
   end
 end
 
-run BaseMiddleware.new(PUBLIC)
 ## Rack middleware for correcting paths:
 ##  
 ## 1. redirects from the www. version to the naked domain version
@@ -113,64 +108,65 @@ run BaseMiddleware.new(PUBLIC)
 # may receive fixes and other assets should have an expiry in the far 
 # future, with 12 hours not being enough. 
 
-#class Application < BaseMiddleware
-#  class Http404 < Exception; end
+class Application < BaseMiddleware
+  class Http404 < Exception; end
+
+  def guess_mimetype(path)
+    type = MIME::Types.of(path)[0] || nil
+    type ? type.to_s : nil
+  end
+
+  def call(env)
+    request = Rack::Request.new(env)
+    path_info = request.path_info
+
+    # a /ping request always hits the Ruby Rake server - useful in
+    # case you want to setup a cron to check if the server is still
+    # online or bring it back to life in case it sleeps
+
+    if path_info == "/ping"
+      return [200, {
+          'Content-Type' => 'text/plain', 
+          'Cache-Control' => 'no-cache'
+      }, [DateTime.now.to_s]]
+    end
+    
+    headers = {}
+    if mimetype = guess_mimetype(path_info)
+      headers['Content-Type'] = mimetype
+      if mimetype == 'text/html'
+        headers['Content-Language'] = 'en' 
+        headers['Content-Type'] += "; charset=utf-8"
+      end
+    end
+    
+    begin
+      # basic validation of the path provided
+      raise Http404 if path_info.include? '..'
+      abs_path = File.join(PUBLIC, path_info[1..-1])
+      raise Http404 unless File.exists? abs_path
+
+      # setting Cache-Control expiry headers
+      type = path_info =~ /\.html?$/ ? 'html' : 'assets'
+      headers['Cache-Control']  = "public, max-age="
+      headers['Cache-Control'] += CONFIG['expires'][type].to_s
+
+      status, response = 200, File.open(abs_path, 'r')
+    rescue Http404
+      status, response = 404, ["404 Not Found: #{path_info}"]
+    end
+
+    [status, headers, response]
+  end
+end
+
+
 #
-#  def guess_mimetype(path)
-#    type = MIME::Types.of(path)[0] || nil
-#    type ? type.to_s : nil
-#  end
+# the actual Rack configuration, using 
+# the middleware defined above
 #
-#  def call(env)
-#    request = Rack::Request.new(env)
-#    path_info = request.path_info
-#
-#    # a /ping request always hits the Ruby Rake server - useful in
-#    # case you want to setup a cron to check if the server is still
-#    # online or bring it back to life in case it sleeps
-#
-#    if path_info == "/ping"
-#      return [200, {
-#          'Content-Type' => 'text/plain', 
-#          'Cache-Control' => 'no-cache'
-#      }, [DateTime.now.to_s]]
-#    end
-#    
-#    headers = {}
-#    if mimetype = guess_mimetype(path_info)
-#      headers['Content-Type'] = mimetype
-#      if mimetype == 'text/html'
-#        headers['Content-Language'] = 'en' 
-#        headers['Content-Type'] += "; charset=utf-8"
-#      end
-#    end
-#    
-#    begin
-#      # basic validation of the path provided
-#      raise Http404 if path_info.include? '..'
-#      abs_path = File.join(PUBLIC, path_info[1..-1])
-#      raise Http404 unless File.exists? abs_path
-#
-#      # setting Cache-Control expiry headers
-#      type = path_info =~ /\.html?$/ ? 'html' : 'assets'
-#      headers['Cache-Control']  = "public, max-age="
-#      headers['Cache-Control'] += CONFIG['expires'][type].to_s
-#
-#      status, response = 200, File.open(abs_path, 'r')
-#    rescue Http404
-#      status, response = 404, ["404 Not Found: #{path_info}"]
-#    end
-#
-#    [status, headers, response]
-#  end
-#end
-#
-#
-##
-## the actual Rack configuration, using 
-## the middleware defined above
-##
-#
+
 ##use Redirects
 #use PathCorrections
 #use Fancy404NotFound
+run Application.new(PUBLIC)
