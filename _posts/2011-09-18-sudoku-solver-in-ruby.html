@@ -12,7 +12,9 @@ meta:
   email_notification: '1316381883'
 ---
 Being inspired by pure elegance and mastery of <a href="http://norvig.com/sudoku.html">Peter Norvig's sudoku solver</a> which was implemented in Python, I wanted to see what it would look like in Ruby. I also wanted to check if my understanding of the original ideas, data structures and implementation details is good enough to implement them in another language. After I had finished the first Ruby version (you could see it bellow) I found, not surprisingly at all, that the original program is more elegant and easy to read and that it better communicates essential ideas (I don't think this is only because Python has list comprehensions ;)).
-<pre>def cross(arr,brr)
+
+{% highlight ruby %}
+def cross(arr,brr)
   arr.map{ |a| brr.map{ |b| a+b }}.flatten
 end
 
@@ -23,14 +25,20 @@ SQUARES = cross(ROWS, COLS)
 UNITSARR = COLS.map{ |c| cross(ROWS, [c]) } +
            ROWS.map{ |r| cross([r], COLS) } +
            ['A'..'C','D'..'F','G'..'I'].inject([]) do |arr,rs|
-              ['1'..'3','4'..'6','7'..'9'].map{ |cs| arr &lt;&lt; cross(rs, cs) }
+              ['1'..'3','4'..'6','7'..'9'].map do |cs| 
+                    arr << cross(rs, cs) 
+                 end              
               arr
            end
-UNITS = SQUARES.inject({}){ |h,s| h[s] = UNITSARR.select{ |u| u.include? s}.flatten; h}
+UNITS = SQUARES.inject({}) do |h,s| 
+           h[s] = UNITSARR.select{ |u| u.include? s}.flatten; h
+        end
 PEERS = SQUARES.inject({}){ |h,s| h[s] = UNITS[s] - [s]; h}
-</pre>
+{% endhighlight %}
+
 Parse the inital sudoku problem:
-<pre>
+
+{% highlight ruby %}
 def parse_grid
    values = Hash[SQUARES.zip([DIGITS] * GSIZE)]
    grid_values = lambda do |grid|
@@ -42,18 +50,21 @@ def parse_grid
       end ? false : values
    end
 end
-</pre>
+{% endhighlight %}
+
 Assign the values:
-<pre>
+
+{% highlight ruby %}
 def assign(values, s, d)
    ([values[s]].flatten - [d]).all? do |d2|
       eliminate(values, s, d2)
    end ? values : false
 end
-</pre>
+{% endhighlight %}
 
 By eliminating non acceptable combinations (recursive method):
-<pre>
+
+{% highlight ruby %}
 def eliminate(values, s, d)
    return values unless [values[s]].flatten.include?(d)
    values[s] = [values[s]].flatten - [d]
@@ -76,33 +87,38 @@ def eliminate(values, s, d)
 
    values
 end
-</pre>
+{% endhighlight %}
 Search for solution:
-<pre>
+
+{% highlight ruby %}
 def search(values)
    return false unless values
    return values unless values.any?{ |k,v| v.size != 1 }
    s, n = values.find do |k,v|
-      v.size == values.select{ |k,v| v.size &gt; 1 }.map{ |k,v| v.size }.min
+      v.size == values.select{ |k,v| 
+         v.size > 1 
+      }.map{ |k,v| v.size }.min
    end
    return values[s].map do |d|
       search(assign(values.dup, s, d))
    end.flatten.find{ |v| v }
 end
 def solve(grid); search(parse_grid[grid]); end
-</pre>
+{% endhighlight %}
 
 And display it:
 
-<pre>
+{% highlight ruby %}
 def display(values)
    width = 1 + SQUARES.map{ |s| values[s].size }.flatten.max
    line = [[ '-' * (width * 3)] * 3].join '+'
    ROWS.each{ |r|
       puts COLS.inject(''){ |s,c|
-      s &lt;&lt; values[r+c].join('').center(width)
-      ['3', '6'].include?(c) ? s &lt;&lt; '|' : s
+      s << values[r+c].join('').center(width)
+      ['3', '6'].include?(c) ? s << '|' : s
    }
    puts line if ['C', 'F'].include?(r)
 }
-end</pre>
+end
+{% endhighlight %}
+

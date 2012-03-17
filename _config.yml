@@ -5,16 +5,18 @@ expires:
   assets: 1314000 # one year
 
 # basic configuration
-exclude: resources.txt #, Rakefile
+exclude: theme-resources.txt #, Rakefile
 paginate: 2
 permalink: /posts/:title.html
 
-# header
-title: awesome title
-subtitle: even more awesome subtitle
+#highlight support
+pygments: true
 
-# one of: blue, red, green
-style: green
+# header
+title: Pulp Programming
+subtitle: less of a cathedral, more of a bazaar
+
+style: pulp
 
 # your disqus id or False if you don't want comments
 disqus: False
