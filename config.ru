@@ -120,6 +120,10 @@ class Application < BaseMiddleware
     request = Rack::Request.new(env)
     path_info = request.path_info
 
+    puts "host with port:"
+    puts request.host_with_port
+    puts "query string:"
+    puts request.query_string
     # a /ping request always hits the Ruby Rake server - useful in
     # case you want to setup a cron to check if the server is still
     # online or bring it back to life in case it sleeps
@@ -128,7 +132,7 @@ class Application < BaseMiddleware
       return [200, {
           'Content-Type' => 'text/plain', 
           'Cache-Control' => 'no-cache'
-      }, [path_info]]
+      }, [DateTime.now.to_s]]
     end
  
     
@@ -145,8 +149,10 @@ class Application < BaseMiddleware
       # basic validation of the path provided
       raise Http404 if path_info.include? '..'
       abs_path = File.join(PUBLIC, path_info[1..-1])
+      puts "this is abs_path!:"
+      puts abs_path
       raise Http404 unless File.exists? abs_path
-
+      puts "abs_path exists!"
       # setting Cache-Control expiry headers
       type = path_info =~ /\.html?$/ ? 'html' : 'assets'
       headers['Cache-Control']  = "public, max-age="
