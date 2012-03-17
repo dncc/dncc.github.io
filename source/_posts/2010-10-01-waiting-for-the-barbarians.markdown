@@ -7,6 +7,7 @@ status: publish
 type: post
 published: true
 ---
+
 *What are we waiting for, assembled in the forum?*
  
 *The barbarians are to arrive today.*
