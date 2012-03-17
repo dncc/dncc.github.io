@@ -4,15 +4,16 @@
 # * knows how to do redirects, with settings taken from ./_config.yaml
 # * sets the cache expiry for HTML files differently from other static
 #   assets, with settings taken from ./_config.yaml
-
+require 'pp'
 require 'yaml'
 require 'mime/types'
 
 # main configuration file, also used by Jekyll
-puts "Dirname: #{File.absolute_path(__FILE__)}"
+puts "absolute path of this file: #{File.absolute_path(__FILE__)}"
 
 CONFIG = YAML::load_file(File.join(File.dirname(__FILE__), '_config.yml'))
 
+pp CONFIG
 # points to our generated website directory
 PUBLIC = File.expand_path(File.join(File.dirname(__FILE__), 
                           CONFIG['destination'] || '_site'))
