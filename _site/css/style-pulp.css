@@ -1,0 +1,268 @@
+
+/*
+ *  - To keep the footer at bottom, margin-top and margin-bottom are avoided
+ *    except in the container and the footer/push div themselves.
+ *
+ *  - Margin/padding are also set to 0 at the start and controlled in each
+ *    particular element.
+ *
+ *  - This style should be (at least) compatible with:
+ *    IE6+, Opera, Webkit-based browsers such as Chrome, Firefox...
+ */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: #222;
+    font-family: Verdana, "Bitstream Vera Sans", sans-serif;
+}
+
+a {
+    color: #222;
+    background-color: #92bf6f;
+    text-decoration: none;
+}
+
+    /*font-weight: bold;*/
+a:hover {
+    color: #fff;
+    background-color: #222;
+    text-decoration: none;
+}
+
+blockquote {
+    background-color: #dedede;
+    border-left: 2px solid #dedede;
+    margin-left: 10px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* Main wrapper */
+
+.container {
+    background: #FFF;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    width: 640px;
+
+    /* Keep footer at bottom */
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -151px;
+    min-height: 100%;
+}
+
+/* Header and subtitle */
+
+.header {
+    margin: -1px;
+    background-color: #ff6600;
+    font-family: Helvetica, Arial, sans-serif;
+    padding-bottom: -10px;
+    padding-top: 10px;
+}
+
+.header a {
+    color: #f6f6fe;
+    background-color: #ff6600;
+    font-weight: bold;
+    font-size: 22px;
+    padding-left: 17px;
+}
+
+.header .subtitle p {
+    color: #222;
+    background-color: #ff6600;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    padding-left: 19px;
+}
+
+/* Navigation */
+.navigation {
+    text-align: right;
+    margin: -1px;
+    background-color: #f60;
+    font-family: Helvetica, Arial, sans-serif;
+    padding-right: 12px;
+}
+
+.navigation a {
+    color: #222;
+    background-color: #f60;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+.navigation a:hover {
+    text-decoration: underline;
+}
+/* Content */
+
+.content {
+    font-family: Verdana, "Bitstream Vera Sans", sans-serif;
+    font-size: 12px;
+    line-height: 1.3em;
+    margin: 0 auto;
+    text-align: justify;
+    width: 600px;
+}
+
+.content img {
+    padding: 10px;
+}
+
+/* Post title as link */
+
+.content h1 a { 
+    color: #222; 
+    background-color: #fff; 
+}
+
+.content h1 a:hover { text-decoration: underline }
+
+/* Used both post title and archives title */
+
+.content h1 {
+    color: #222;
+    border-bottom: 1px solid #ccc;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-top: 20px;
+}
+
+.content .date {
+    color: #aaa;
+    font-size: 1em;
+    padding-bottom: 10px;
+    padding-top: 2px;
+}
+
+/* Used in internal post sections */
+
+.content h2 {
+    color: #998E82;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.content p {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.content li {
+    list-style-position: inside;
+    padding-left: 20px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+/* Pagination links */
+
+.leftright {
+    font-size: 12px;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.leftright a {
+    color: #222;
+    background-color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.leftright a:hover {
+    color: #65822A;
+    text-decoration: underline;
+}
+
+.leftright .left {
+    display: inline;
+}
+
+.leftright .right {
+    display: inline;
+    padding-left: 2em;
+}
+
+/* 3-column footer */
+
+.footer {
+    background-color: #F6F6F6;
+    border-top: 1px solid #ccc;
+    color: #3F3F3F;
+    font-size: 12px;
+    position: relative;
+    margin: 0em auto;
+    width: 640px;
+}
+
+.footer, .push {
+    clear: both;
+    height: 150px;
+}
+
+#archive a, .footer a {
+    color: #222;
+    background-color: #fff;
+    font-weight: bold;
+}
+
+#archive a:hover, .footer a:hover {
+    text-decoration: underline;
+}
+
+.footer h1 {
+    font-size: 12px;
+    padding: 5px;
+    text-align: center;
+}
+
+.footer div {
+    float: left;
+    margin-left: 20px;
+    width: 180px;
+}
+
+.footer li {
+    margin-left: 20px;
+    text-align: left;
+}
+
+/* Archives */
+
+.archives table {
+    line-height: 1em;
+    width: 100%;
+}
+
+.archives table .postlink {
+    padding-left: 20px;
+}
+
+.archives table .postdate {
+    color: #aaa;
+    text-align: right;
+}
+

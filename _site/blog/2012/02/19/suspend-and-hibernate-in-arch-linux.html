@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="en"/>
+    <meta name="robots" content="index,follow"/>
+    <title>
+        
+            Suspend and Hibernate in Arch Linux
+        
+    </title>
+    <link rel="stylesheet" href="/css/style-pulp.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/syntax.css" media="screen" type="text/css"/>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/index.html"> Pulp Programming </a>
+            <div class="subtitle">
+                <p> less of a cathedral, more of a bazaar </p>
+            </div>
+        </div>
+
+        <div class="navigation">
+              <a href="/">/home</a>
+              <a href="/pages/archive.html">/archive</a>
+              <!--a href="/pages/about.html">/about</a-->
+        </div>
+
+        <div class="content">
+            
+
+<h1> <a href="/blog/2012/02/19/suspend-and-hibernate-in-arch-linux.html"> Suspend and Hibernate in Arch Linux </a> </h1>
+
+<div class="date">
+    published: 19 Feb 2012
+</div>
+
+<p>In order to suspend your session in Arch Linux (to RAM or disk) you should try to follow the steps from bellow:</p>
+
+<p>First install pm-utils tools with the pacman. No surprises here, just type:</p>
+
+<div class="highlight"><pre><code class="text">sudo pacman -S pm-utils
+</code></pre>
+</div>
+
+
+<p>and heavy lifting will be done with the awesome pacman program. In the case that 'vbetool' and 'acpi' packages are not installed, you will need to install them too with similar incantations.</p>
+
+<p>Suspend to RAM should be enabled imidiatelly. You can check that with the following command:</p>
+
+<div class="highlight"><pre><code class="text">sudo pm-suspend
+</code></pre>
+</div>
+
+
+<p>After this, current session should be saved to RAM and machine put on standby mode.</p>
+
+<p>Hibernation (suspend to disk) needs additional configuration. Receipt that worked for me is listed bellow:</p>
+
+<p>Add to GRUB's config file 'resume' option ('resume=/path/to/swap/drive') by editing the kernel line in the next paragraph:</p>
+
+<div class="highlight"><pre><code class="text">title Arch Linux
+root (hd0,2)
+kernel /vmlinuz-linux root=/dev/sda4 ro
+initrd /initramfs-linux.img
+</code></pre>
+</div>
+
+
+<p>as follows:</p>
+
+<div class="highlight"><pre><code class="text">kernel /vmlinuz-linux root=/dev/sda4 resume=/dev/sda5 ro
+</code></pre>
+</div>
+
+
+<p><em>Note:
+GRUB config file on my machine is '/boot/grub/menu.lst', but if you have GRUB2 it should be '/boot/grub/grub.cfg', also the configuration is somewhat different, look for details [here] (https://wiki.archlinux.org/index.php/Pm-utils#Hibernation_.28suspend2disk.29).
+The swap partition on my machine is '/dev/sda5', of course you should change this with the path of your swap partition.</em></p>
+
+<p>Additionally, resume hook should be added to 'etc/mkinitcpio.conf' as follows:</p>
+
+<div class="highlight"><pre><code class="text">HOOKS=&quot;base udev autodetect ide scsi sata lvm2 resume filesystems&quot;
+</code></pre>
+</div>
+
+
+<p>Ordering matters here, so it is important to place resume after ide, scsi, sata and lvm2 and before filesystems. After this, recreate ramdisk environment with:</p>
+
+<div class="highlight"><pre><code class="text">mkinitcpio -p linux
+</code></pre>
+</div>
+
+
+<p>If everything went well set user permissions for pm-utils in '/etc/sudoers' config file as follows:</p>
+
+<div class="highlight"><pre><code class="text">username,hostname=NOPASSWD:/usr/sbin/pm-hibernate, /usr/sbin/pm-suspend
+</code></pre>
+</div>
+
+
+<p>where username and hostname placeholders shoud be actual values. This way you authorize your user to execute pm-hibernate and pm-suspend w/o need to login as superuser each time.</p>
+
+<p>Add aliases to config file of your preferd shell and you are good to go:</p>
+
+<div class="highlight"><pre><code class="text">alias hibernate=&quot;sudo pm-hibernate&quot;
+alias suspend=&quot;sudo pm-suspend&quot;
+</code></pre>
+</div>
+
+
+<p>Happy hacking!</p>
+
+
+
+
+
+
+
+<div class="leftright">
+    
+
+    
+        <div class="right">
+            <a href="/blog/2011/11/12/ruby-quine-blog.html"> Ruby quine (we all came from Turing machine) </a> &raquo;
+        </div>
+    
+</div>
+
+
+
+
+        </div>
+        <div class="push"></div>
+    </div>
+    <!--
+<div class="footer">
+    <div>
+        <h1> Archives </h1>
+        <ul>
+            <li> <a href="/archives.html">Archives</a> </li>
+        </ul>
+        <br/>
+    </div>
+
+    <div>
+        <h1> Meta </h1>
+        <ul>
+            <li> <a href="/atom.xml">RSS</a> </li>
+            <li> <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> </li>
+            <li> <a href="http://jigsaw.w3.org/css-validator/check/referer">Valid CSS</a> </li>
+        </ul>
+    </div>
+
+    <div>
+      <h1> Blogroll </h1>
+        <ul>
+            <li> <a href="https://github.com/">Github</a> </li>
+            <li> <a href="https://github.com/mojombo/jekyll/">Jekyll Home</a> </li>
+            <li> <a href="http://pages.github.com/">Pages tutorial</a> </li>
+        </ul>
+    </div>
+</div>
+
+ -->
+</body>
+</html>
+
