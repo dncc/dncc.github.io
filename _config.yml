@@ -7,14 +7,12 @@ expires:
   html: 3600 # one hour
   assets: 1314000 # one year
 
-exclude: theme-resources.txt #, Rakefile
-
 
 # basic configuration
-
+source: ./source
 destination: ./_site
-plugins: ./source/_plugins
-permalink: /posts/:title.html
+permalink: /blog/:year/:month/:day/:title.html
+# permalink: /posts/:title.html
 
 paginate: 2
 # header
@@ -25,11 +23,3 @@ style: pulp
 
 # your disqus id or False if you don't want comments
 disqus: False
-
-# the following are required for RSS to work
-# remember not to end the 'root' with a slash:
-root: http://pulpprogramming.com
-author: dnc
-email: dcvetinovic@gmail.com
-
-redirects:
