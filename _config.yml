@@ -3,3 +3,25 @@ destination: ./_site
 expires:
   html: 3600 # one hour
   assets: 1314000 # one year
+
+# basic configuration
+exclude: resources.txt #, Rakefile
+paginate: 2
+permalink: /posts/:title.html
+
+# header
+title: awesome title
+subtitle: even more awesome subtitle
+
+# one of: blue, red, green
+style: green
+
+# your disqus id or False if you don't want comments
+disqus: False
+
+# the following are required for RSS to work
+# remember not to end the 'root' with a slash:
+root: http://pulpprogramming.com
+author: dnc
+email: dcvetinovic@gmail.com
+

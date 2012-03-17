@@ -1,0 +1,64 @@
+---
+layout: post
+title: Suspend and Hibernate in Arch Linux
+tags:
+- Linux
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '16929416'
+  jabber_published: '1329682794'
+  email_notification: '1329682794'
+---
+In order to suspend your session in Arch Linux (to RAM or disk) you should try to follow the steps from bellow:
+
+1. First install pm-utils tools with the pacman. No surprises here, just type:
+<blockquote>
+<pre>sudo pacman -S pm-utils</pre>
+</blockquote>
+and heavy lifting will be done with the awesome pacman program. In the case that 'vbetool' and 'acpi' packages are not installed, you will need to install them too with similar incantations.
+
+2. Suspend to RAM should be enabled imidiatelly. You can check that with the following command:
+<blockquote>
+<pre>sudo pm-suspend</pre>
+</blockquote>
+After this, current session should be saved to RAM and machine put on standby mode.
+
+3.Hibernation (suspend to disk) needs additional configuration. Receipt that worked for me is listed bellow:
+
+3.1. Add to GRUB's config file 'resume' option ('resume=/path/to/swap/drive') by editing the kernel line in the next paragraph:
+<blockquote>
+<pre>title Arch Linux
+root (hd0,2)
+kernel /vmlinuz-linux root=/dev/sda4 ro
+initrd /initramfs-linux.img</pre>
+</blockquote>
+as follows:
+<blockquote>
+<pre>kernel /vmlinuz-linux root=/dev/sda4 resume=/dev/sda5 ro</pre>
+</blockquote>
+<em>Note:
+GRUB config file on my machine is '/boot/grub/menu.lst', but if you have GRUB2 it should be '/boot/grub/grub.cfg', also the configuration is somewhat different, look for details <a title="here" href="https://wiki.archlinux.org/index.php/Pm-utils#Hibernation_.28suspend2disk.29">here</a>).
+The swap partition on my machine is '/dev/sda5', of course you should change this with the path of your swap partition.</em>
+
+3.2. Additionally, resume hook should be added to 'etc/mkinitcpio.conf' as follows:
+<blockquote>
+<pre>HOOKS="base udev autodetect ide scsi sata lvm2 resume filesystems"</pre>
+</blockquote>
+Ordering matters here, so it is important to place resume after ide, scsi, sata and lvm2 and before filesystems. After this, recreate ramdisk environment with:
+<blockquote>
+<pre>mkinitcpio -p linux</pre>
+</blockquote>
+If everything went well set user permissions for pm-utils in '/etc/sudoers' config file as follows:
+<blockquote>
+<pre> username, hostname=NOPASSWD: /usr/sbin/pm-hibernate, /usr/sbin/pm-suspend</pre>
+</blockquote>
+where username and hostname placeholders shoud be actual values. This way you authorize your user to execute pm-hibernate and pm-suspend w/o need to login as superuser each time.
+
+3.4. Add aliases to config file of your preferd shell and you are good to go:
+<blockquote>
+<pre>alias hibernate="sudo pm-hibernate"
+alias suspend="sudo pm-suspend"</pre>
+</blockquote>
+Happy hacking!

@@ -1,0 +1,15 @@
+---
+layout: base
+---
+
+{% for post in paginator.posts %}
+    {% assign content = post.content %}
+    {% include post.html %}
+
+    {% if site.disqus %}
+        <p> <a href="{{ post.url }}#disqus_thread">View comments</a> </p>
+    {% endif %}
+{% endfor %}
+
+{% include prevnextpage.html %}
+

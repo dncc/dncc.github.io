@@ -1,0 +1,13 @@
+---
+layout: base
+---
+
+{% assign post = page %}
+{% include post.html %}
+
+{% if site.disqus %}
+    {% include disqus.html %}
+{% endif %}
+
+{% include prevnextpost.html %}
+
