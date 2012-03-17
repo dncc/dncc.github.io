@@ -1,17 +1,23 @@
-destination: ./_site
+
+markdown: rdiscount
+pygments: true
+site_domain: pulpprogramming.com
+build_type: production
 
 expires:
   html: 3600 # one hour
   assets: 1314000 # one year
 
-# basic configuration
 exclude: theme-resources.txt #, Rakefile
-paginate: 2
+
+
+# basic configuration
+
+destination: ./_site
+plugins: ./source/_plugins
 permalink: /posts/:title.html
 
-#highlight support
-pygments: true
-
+paginate: 2
 # header
 title: Pulp Programming
 subtitle: less of a cathedral, more of a bazaar
