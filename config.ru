@@ -69,14 +69,14 @@ class Redirects < BaseMiddleware
     ext  = File.extname(path)
     path += '/' if ext == '' and ! path.end_with?('/')
 
-    if redirect = CONFIG['redirects'].find{|x| path == x['from']}
-      new_location = redirect['to']
-      new_location = request.base_url + new_location \
-        unless new_location.start_with?("http")
-      [redirect['type'] || 302, {'Location' => new_location}, self]
-    else
+    #if redirect = CONFIG['redirects'].find{|x| path == x['from']}
+    #  new_location = redirect['to']
+    #  new_location = request.base_url + new_location \
+    #    unless new_location.start_with?("http")
+    #  [redirect['type'] || 302, {'Location' => new_location}, self]
+    #else
       @app.call(env)
-    end
+    #end
   end
 end
 
@@ -173,4 +173,3 @@ use PathCorrections
 use Fancy404NotFound
 
 run Application.new(PUBLIC)
-
