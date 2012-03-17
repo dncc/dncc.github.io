@@ -9,7 +9,9 @@ require 'yaml'
 require 'mime/types'
 
 # main configuration file, also used by Jekyll
-#CONFIG = YAML::load_file(File.join(File.dirname(__FILE__), '_config.yml'))
+puts "Dirname: #{File.absolute_path(__FILE__)}"
+
+CONFIG = YAML::load_file(File.join(File.dirname(__FILE__), '_config.yml'))
 
 # points to our generated website directory
 PUBLIC = File.expand_path(File.join(File.dirname(__FILE__), 
