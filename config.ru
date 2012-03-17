@@ -9,11 +9,11 @@ require 'yaml'
 require 'mime/types'
 
 # main configuration file, also used by Jekyll
-CONFIG = YAML::load_file(File.join(File.dirname(__FILE__), '_config.yml'))
+#CONFIG = YAML::load_file(File.join(File.dirname(__FILE__), '_config.yml'))
 
 # points to our generated website directory
-#PUBLIC = File.expand_path(File.join(File.dirname(__FILE__), 
-#                          CONFIG['destination'] || '_site'))
+PUBLIC = File.expand_path(File.join(File.dirname(__FILE__), 
+                          CONFIG['destination'] || '_site'))
 
 # For cutting down on the boilerplate
 class BaseMiddleware
