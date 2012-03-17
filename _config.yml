@@ -1,8 +1,7 @@
-
-markdown: rdiscount
-pygments: true
 site_domain: pulpprogramming.com
 build_type: production
+markdown: rdiscount
+pygments: true
 
 expires:
   html: 3600 # one hour
