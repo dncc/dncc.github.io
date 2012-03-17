@@ -14,7 +14,7 @@ meta:
   email_notification: '1286050632'
 ---
 
-I've been going  through some parts of [The Ruby Programming Language] (http://oreilly.com/catalog/9780596516178) book recently, the best book about Ruby language I've read and here are some interesting bits about memoization that I found:
+I've been going  through some parts of [The Ruby Programming Language](http://oreilly.com/catalog/9780596516178/) book recently, the best book about Ruby language I've read and here are some interesting bits about memoization that I found:
 
 > Memoization is a functional programming term for caching the results of 
 > a function invocation. If a function always returns the same value when 
