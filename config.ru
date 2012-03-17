@@ -25,25 +25,25 @@ class BaseMiddleware
   end
 end
 
-## Rack middleware for correcting paths:
-##  
-## 1. redirects from the www. version to the naked domain version
-##
-## 2. converts directory/paths/ to directory/paths/index.html (most
-##    importantly / to /index.html)
+# Rack middleware for correcting paths:
+#  
+# 1. redirects from the www. version to the naked domain version
 #
-#class PathCorrections < BaseMiddleware
-#  def call(env)
-#    env['PATH_INFO'] += 'index.html' if env['PATH_INFO'].end_with? '/'
-#    request = Rack::Request.new(env)
-#    
-#    if request.host.start_with?("www.")
-#      [301, {"Location" => request.url.sub("//www.", "//")}, self]
-#    else
-#      @app.call(env)
-#    end    
-#  end
-#end
+# 2. converts directory/paths/ to directory/paths/index.html (most
+#    importantly / to /index.html)
+
+class PathCorrections < BaseMiddleware
+  def call(env)
+    env['PATH_INFO'] += 'index.html' if env['PATH_INFO'].end_with? '/'
+    request = Rack::Request.new(env)
+    
+    if request.host.start_with?("www.")
+      [301, {"Location" => request.url.sub("//www.", "//")}, self]
+    else
+      @app.call(env)
+    end    
+  end
+end
 
 
 ## Middleware that enables configurable redirects. The configuration is
@@ -84,20 +84,20 @@ end
 # Rack::File). However, in case of HTML files, then we should display
 # a custom 404 message
 
-#class Fancy404NotFound < BaseMiddleware
-#  def call(env)
-#    status, headers, response = @app.call(env)
-#    if status == 404 
-#      ext = File.extname(env['PATH_INFO'])
-#      if ext =~ /html?$/ or ext == '' or !ext
-#        headers = {'Content-Type' => 'text/html'}
-#        response = File.open(File.join PUBLIC, 'pages', '404.html')
-#      end
-#    end
-#
-#    [status, headers, response]
-#  end
-#end
+class Fancy404NotFound < BaseMiddleware
+  def call(env)
+    status, headers, response = @app.call(env)
+    if status == 404 
+      ext = File.extname(env['PATH_INFO'])
+      if ext =~ /html?$/ or ext == '' or !ext
+        headers = {'Content-Type' => 'text/html'}
+        response = File.open(File.join PUBLIC, 'pages', '404.html')
+      end
+    end
+
+    [status, headers, response]
+  end
+end
 
 
 # Mimicking Rack::File
@@ -167,6 +167,6 @@ end
 #
 
 ##use Redirects
-#use PathCorrections
-#use Fancy404NotFound
+use PathCorrections
+use Fancy404NotFound
 run Application.new(PUBLIC)
