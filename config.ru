@@ -152,7 +152,7 @@ class Application < BaseMiddleware
       abs_path = File.join(PUBLIC, path_info[1..-1])
       puts "abs_path: #{abs_path}"
        
-      raise Http404 unless File.exists? abs_path
+      #raise Http404 unless File.exists? abs_path
       # setting Cache-Control expiry headers
       type = path_info =~ /\.html?$/ ? 'html' : 'assets'
       headers['Cache-Control']  = "public, max-age="
