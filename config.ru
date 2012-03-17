@@ -21,6 +21,10 @@ class BaseMiddleware
     @app = app
   end
 
+  def call(env)
+    @app.call(env)
+  end
+
   def each(&block)
   end
 end
