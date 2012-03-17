@@ -14,7 +14,7 @@ destination: ./_site
 permalink: /blog/:year/:month/:day/:title.html
 # permalink: /posts/:title.html
 
-paginate: 2
+paginate: 3
 # header
 title: Pulp Programming
 subtitle: less of a cathedral, more of a bazaar

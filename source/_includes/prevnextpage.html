@@ -5,14 +5,14 @@
             {% if paginator.previous_page == 1 %}
                 &laquo; <a href="/index.html"> Next entries </a>
             {% else %}
-                &laquo; <a href="/page{{ paginator.previous_page }}"> Next entries </a>
+                &laquo; <a href="/page{{ paginator.previous_page }}/index.html"> Next entries </a>
             {% endif %}
         </div>
     {% endif %}
 
     {% if paginator.next_page %}
         <div class="right">
-            <a href="/page{{ paginator.next_page }}"> Previous entries </a> &raquo;
+            <a href="/page{{ paginator.next_page }}/index.html"> Previous entries </a> &raquo;
         </div>
     {% endif %}
 </div>

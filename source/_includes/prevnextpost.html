@@ -2,13 +2,13 @@
 <div class="leftright">
     {% if post.next %}
         <div class="left">
-            &laquo; <a href="{{ post.next.url }}"> {{ post.next.title }} </a>
+            &laquo; <a href="{{ post.next.url }}/index.html"> {{ post.next.title }} </a>
         </div>
     {% endif %}
 
     {% if post.previous %}
         <div class="right">
-            <a href="{{ post.previous.url }}"> {{ post.previous.title }} </a> &raquo;
+            <a href="{{ post.previous.url }}/index.html"> {{ post.previous.title }} </a> &raquo;
         </div>
     {% endif %}
 </div>
