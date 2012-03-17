@@ -128,8 +128,9 @@ class Application < BaseMiddleware
       return [200, {
           'Content-Type' => 'text/plain', 
           'Cache-Control' => 'no-cache'
-      }, [DateTime.now.to_s]]
+      }, [path_info]]
     end
+ 
     
     headers = {}
     if mimetype = guess_mimetype(path_info)
