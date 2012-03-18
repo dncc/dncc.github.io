@@ -223,7 +223,7 @@ blockquote {
     height: 150px;
 }
 
-#disqus_thread a, a.comments, #archive a, .footer a {
+.footer a, a.comments, #archive a, #disqus_thread a {
     color: #322b21;
     background-color: #fff;
     font-weight: bold;
