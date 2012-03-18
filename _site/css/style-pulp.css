@@ -128,7 +128,7 @@ blockquote {
 /* Post title as link */
 
 .content h1 a { 
-    color: #222; 
+    color: #322b21; 
     background-color: #fff; 
 }
 
@@ -186,7 +186,7 @@ blockquote {
 }
 
 .leftright a {
-    color: #222;
+    color: #322b21;
     background-color: #fff;
     font-weight: bold;
     text-decoration: none;
@@ -223,13 +223,13 @@ blockquote {
     height: 150px;
 }
 
-#archive a, .footer a {
-    color: #222;
+#disqus_thread a, a.comments, #archive a, .footer a {
+    color: #322b21;
     background-color: #fff;
     font-weight: bold;
 }
 
-#archive a:hover, .footer a:hover {
+#disqus_thread a:hover, a.comments:hover, #archive a:hover, .footer a:hover {
     text-decoration: underline;
 }
 

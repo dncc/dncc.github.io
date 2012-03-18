@@ -9,7 +9,7 @@ layout: base
     {% include post.html %}
 
     {% if site.disqus %}
-        <p> <a href="{{ post.url }}#disqus_thread">View comments</a> </p>
+        <p> <a href="{{ post.url }}#disqus_thread" class="comments">View comments</a> </p>
     {% endif %}
 
 {% endfor %}
