@@ -227,7 +227,7 @@ blockquote {
     height: 150px;
 }
 
-.copyright a, .footer a, a.comments, #archive a, #disqus_thread a {
+.footer a, a.comments, #archive a, #disqus_thread a {
     color: #322b21;
     background-color: #fff;
     font-weight: bold;
@@ -242,9 +242,13 @@ blockquote {
 }
 
 .copyright a {
-    color: #322b21;
-    font-weight: bold;
+    color: #3F3F3F;
     background-color: #dcdcdc;
+}
+
+.copyright a:hover {
+    color: #3F3F3F;
+    text-decoration: underline;
 }
 
 #disqus_thread a:hover, a.comments:hover, #archive a:hover, .footer a:hover {
