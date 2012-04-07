@@ -61,7 +61,7 @@ blockquote {
     height: auto !important;
     height: 100%;
     margin: 0 auto -151px;
-    margin-top:20px;
+    margin-top:30px;
     margin-bottom:20px;
     min-height: 100%;
 }
@@ -222,16 +222,29 @@ blockquote {
     margin: 0em auto;
     width: 640px;
 }
-
 .footer, .push {
     clear: both;
     height: 150px;
 }
 
-.footer a, a.comments, #archive a, #disqus_thread a {
+.copyright a, .footer a, a.comments, #archive a, #disqus_thread a {
     color: #322b21;
     background-color: #fff;
     font-weight: bold;
+}
+
+.copyright {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    text-align: center;
+    color: #3F3F3F;
+    margin-bottom: 40px;
+}
+
+.copyright a {
+    color: #322b21;
+    font-weight: bold;
+    background-color: #dcdcdc;
 }
 
 #disqus_thread a:hover, a.comments:hover, #archive a:hover, .footer a:hover {
