@@ -55,6 +55,8 @@ blockquote {
     border-right: 1px solid #ccc;
     width: 640px;
 
+    /*border-radius: 9px 9px 9px 9px;*/
+    box-shadow: 0 5px 5px #333333;
     /* Keep footer at bottom */
     height: auto !important;
     height: 100%;
