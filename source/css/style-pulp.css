@@ -55,12 +55,14 @@ blockquote {
     border-right: 1px solid #ccc;
     width: 640px;
 
-    /*border-radius: 9px 9px 9px 9px;*/
+    border-radius: 9px 9px 9px 9px;
     box-shadow: 0 5px 5px #333333;
     /* Keep footer at bottom */
     height: auto !important;
     height: 100%;
     margin: 0 auto -151px;
+    margin-top:20px;
+    margin-bottom:20px;
     min-height: 100%;
 }
 
@@ -69,9 +71,10 @@ blockquote {
 .header {
     margin: -1px;
     background-color: #ff6600;
+    border-radius: 9px 9px 0px 0px;
     font-family: Helvetica, Arial, sans-serif;
     padding-bottom: -10px;
-    padding-top: 10px;
+    padding-top: 20px;
 }
 
 .header a {
@@ -94,7 +97,7 @@ blockquote {
 /* Navigation */
 .navigation {
     text-align: right;
-    margin: -1px;
+    margin-top: -10px;
     background-color: #f60;
     font-family: Helvetica, Arial, sans-serif;
     padding-right: 12px;
