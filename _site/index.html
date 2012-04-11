@@ -115,13 +115,21 @@ $(document).ready(function () {
 
   $("#solve-button").click(function(event) {
     
-    $('#solution').hide('fast');
+    $('#solution').hide('slow');
     $('#status').show('slow');
-    var values = sudoku.solve($('#grid').val());
-    $('#solution').html(sudoku.html(values));
-    $('#status').hide('fast');
-    $('#solution').show('slow');
 
+    var values = sudoku.solve($('#grid').val());
+    if (typeof values == 'undefined') {
+      $('#solution').html("Can't find solution.");
+    } else if (values == false){
+      $('#solution').html("No solution for this setup.");
+    } else {
+      $('#solution').html(sudoku.html(values));
+    }
+
+    $('#status').hide('slow');
+    $('#solution').show('slow');
+    return false;  
   });
 });
 
@@ -129,7 +137,7 @@ $(document).ready(function () {
 
 <div class="sudo-container">
   <textarea id="grid"> </textarea> 
-  <div id="status" style="display:none"> solving...</div>
+  <div id="status" style="display:none">solving...</div>
   <div id="solution" style="display:none;"> </div>
 </div>
 <br/>

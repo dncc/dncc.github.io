@@ -7,6 +7,7 @@ status: publish
 type: post
 published: true
 ---
+
 <style type="text/css">
 .sudo-container {
     width: 500px;
@@ -62,7 +63,7 @@ textarea#grid {
 <script src="/js/sudoku-min.js"></script>
 
 <script>
-http://css-tricks.com/examples/StyledTextArea/
+
 $(document).ready(function () {
 
   $('#grid').val( '1 . . |3 . . |. . . \n' 
@@ -79,26 +80,34 @@ $(document).ready(function () {
 
   $("#solve-button").click(function(event) {
     
-    $('#solution').hide('fast');
+    $('#solution').hide('slow');
     $('#status').show('slow');
-    var values = sudoku.solve($('#grid').val());
-    $('#solution').html(sudoku.html(values));
-    $('#status').hide('fast');
-    $('#solution').show('slow');
 
+    var values = sudoku.solve($('#grid').val());
+    if (typeof values == 'undefined') {
+      $('#solution').html("Can't find solution.");
+    } else if (values == false){
+      $('#solution').html("No solution for this setup.");
+    } else {
+      $('#solution').html(sudoku.html(values));
+    }
+
+    $('#status').hide('slow');
+    $('#solution').show('slow');
+    return false;  
   });
 });
 
 </script>
-
 <div class="sudo-container">
   <textarea id="grid"> </textarea> 
-  <div id="status" style="display:none"> solving...</div>
+  <div id="status" style="display:none">solving...</div>
   <div id="solution" style="display:none;"> </div>
 </div>
 <br/>
 <div class='sudo-footer'>
 <input class='sudo-button sudo-button-action' id='solve-button' type='button' value='Solve'> </input>
 
+<div> Does not support IE for currently :)</div>
 </div>
 
