@@ -43,7 +43,7 @@ kernel /vmlinuz-linux root=/dev/sda4 resume=/dev/sda5 ro
 {% endhighlight %}
 
 *Note:
-GRUB config file on my machine is '/boot/grub/menu.lst', but if you have GRUB2 it should be '/boot/grub/grub.cfg', also the configuration is somewhat different, look for details [here] (https://wiki.archlinux.org/index.php/Pm-utils#Hibernation_.28suspend2disk.29).
+GRUB config file on my machine is '/boot/grub/menu.lst', but if you have GRUB2 it should be '/boot/grub/grub.cfg', also the configuration is somewhat different, look for details [here](https://wiki.archlinux.org/index.php/Pm-utils#Hibernation_.28suspend2disk.29) .
 The swap partition on my machine is '/dev/sda5', of course you should change this with the path of your swap partition.*
 
 Additionally, resume hook should be added to 'etc/mkinitcpio.conf' as follows:
