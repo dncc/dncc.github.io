@@ -25,16 +25,20 @@ body {
 }
 
 a {
-    color: #222;
-    background-color: #92bf6f; 
+    color: #322b21;
+    background-color: #fff;
+    font-weight: bold;
     text-decoration: none;
+    /*color: #222;
+    background-color: #92bf6f; */
 }
 
     /*font-weight: bold;*/
 a:hover {
-    color: #fff;
+    text-decoration: underline;
+    /*color: #fff;
     background-color: #322b21;
-    text-decoration: none;
+    text-decoration: none;*/
 }
 
 blockquote {
@@ -82,6 +86,10 @@ blockquote {
     font-weight: bold;
     font-size: 22px;
     padding-left: 17px;
+}
+
+.header a:hover { 
+    text-decoration: none;
 }
 
 .header .subtitle p {
@@ -136,7 +144,7 @@ blockquote {
     background-color: #fff; 
 }
 
-.content h1 a:hover { text-decoration: underline }
+.content h1 a:hover { text-decoration: none }
 
 /* Used both post title and archives title */
 
@@ -250,9 +258,9 @@ blockquote {
     text-decoration: underline;
 }
 
-#disqus_thread a:hover, a.comments:hover, #archive a:hover, .footer a:hover {
+/*#disqus_thread a:hover, a.comments:hover, #archive a:hover, .footer a:hover {
     text-decoration: underline;
-}
+} */
 
 .footer h1 {
     font-size: 12px;
