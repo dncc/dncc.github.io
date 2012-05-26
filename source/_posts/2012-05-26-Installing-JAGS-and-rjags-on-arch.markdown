@@ -42,7 +42,7 @@ removing '/usr/local/lib/R/site-library/rjags'
 ...
 {% endhighlight %}
 
-First, I tried various things with the previous R function (some of which, for instance, were to include 'dependecies=TRUE' and module paths as arguments to this function). That didn't work. After quite a few failed trials I found out that jags libraries were in '/usr/local/lib' directory and it was not included in my linker path. I checked this with:
+First, I tried various things with the previous R function (some of which, for instance, were to include 'dependecies=TRUE' and jags module paths as arguments to this function). That didn't work. After quite a few failed trials I found out that jags libraries were in '/usr/local/lib' directory and it was not included in my linker path. I checked this with:
 
 {% highlight bash %}
 sudo ldconfig -p | grep local
@@ -61,7 +61,7 @@ sudo R --with-jags-modules=/usr/local/lib/JAGS/modules-3 \
 CMD INSTALL ~/downloads/rjags_3-2.tar.gz
 {% endhighlight %}
 
-and this time it was installed! It remained just to develop some Bayesian models for predicting a stock price movements or whatever and make myself owfully rich ;).  
+and this time it was installed! It remaines just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself owfully rich ;).  
 
 
 
