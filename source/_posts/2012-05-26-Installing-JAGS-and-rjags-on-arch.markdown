@@ -63,7 +63,7 @@ CMD INSTALL ~/downloads/rjags_3-2.tar.gz
 
 and this time it was installed! 
 
-It remaines just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself owfully rich ;).  
+It remains just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself owfully rich ;).  
 
 
 
