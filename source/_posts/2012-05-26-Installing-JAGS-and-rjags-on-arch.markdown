@@ -61,7 +61,9 @@ sudo R --with-jags-modules=/usr/local/lib/JAGS/modules-3 \
 CMD INSTALL ~/downloads/rjags_3-2.tar.gz
 {% endhighlight %}
 
-and this time it was installed! It remaines just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself owfully rich ;).  
+and this time it was installed! 
+
+It remaines just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself owfully rich ;).  
 
 
 
