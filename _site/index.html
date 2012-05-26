@@ -37,6 +37,85 @@
     
 
     
+<h1> <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html"> Installing JAGS and rjags on Arch Linux </a> </h1>
+
+<div class="date">
+    published: 26 May 2012
+</div>
+
+<p>I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on my Arch Linux I thought it might be good to create a brief record of the whole process. <a href="http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525">Here</a>
+is the thread that was useful to me to identify and solve the problem.</p>
+
+<p>JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was quite straightforward</p>
+
+<div class="highlight"><pre><code class="text">./configure 
+make
+sudo make install
+</code></pre>
+</div>
+
+
+<p>Next, I tried to install 'rjags' package within R:</p>
+
+<div class="highlight"><pre><code class="text">install.packages(&#39;rjags&#39;) 
+</code></pre>
+</div>
+
+
+<p>and I got this error message:</p>
+
+<div class="highlight"><pre><code class="text">...
+*** installing help indices 
+** building package indices ... 
+Error : .onLoad failed in loadNamespace() for &#39;rjags&#39;, details:
+call: dyn.load(file, DLLpath = DLLpath, ...) 
+error: unable to load shared object 
+&#39;/usr/local/lib/R/site-library/rjags/libs/rjags.so&#39;: 
+libjags.so.3: cannot open shared object file: 
+No such file or directory 
+ERROR: installing package indices failed * 
+removing &#39;/usr/local/lib/R/site-library/rjags&#39;
+...
+</code></pre>
+</div>
+
+
+<p>First, I tried various things with the previous R function (some of which, for instance, were to include 'dependecies=TRUE' and module paths as arguments to this function). That didn't work. After quite a few failed trials I found out that jags libraries were in '/usr/local/lib' directory and it was not included in my linker path. I checked this with:</p>
+
+<div class="highlight"><pre><code class="bash">sudo ldconfig -p | grep <span class="nb">local</span>
+</code></pre>
+</div>
+
+
+<p>and since '/usr/local/lib' didn't appear on <em>stdout</em> I added this line in the new '/etc/ld.so.conf.d/jags.conf' file. Than, in order to activate linker paths and check if '/usr/local/lib' was included I run:</p>
+
+<div class="highlight"><pre><code class="bash">sudo ldconfig -v | grep /usr/local/lib
+</code></pre>
+</div>
+
+
+<p>I tried 'rjags' installation again with:</p>
+
+<div class="highlight"><pre><code class="text">sudo R --with-jags-modules=/usr/local/lib/JAGS/modules-3 \
+CMD INSTALL ~/downloads/rjags_3-2.tar.gz
+</code></pre>
+</div>
+
+
+<p>and this time it was installed! It remained just to develop some Bayesian models for predicting a stock price movements or whatever and make myself owfully rich ;).</p>
+
+
+
+
+    
+        <p> <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html#disqus_thread" class="comments">View comments</a> </p>
+    
+
+
+
+    
+
+    
 <h1> <a href="/blog/2012/04/09/sudoku-solver-in-js.html"> Sudoku Solver in JavaScript </a> </h1>
 
 <div class="date">
@@ -246,34 +325,6 @@ alias suspend=&quot;sudo pm-suspend&quot;
 
     
         <p> <a href="/blog/2012/02/19/suspend-and-hibernate-in-arch-linux.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
-
-    
-
-    
-<h1> <a href="/blog/2011/11/12/ruby-quine-blog.html"> Ruby quine (we all came from Turing machine) </a> </h1>
-
-<div class="date">
-    published: 12 Nov 2011
-</div>
-
-
-
-<div class="highlight"><pre><code class="ruby"><span class="n">s</span><span class="o">=</span><span class="s2">&quot;Ruby quine (we all came from Turing machine)%cs=%c%s%c;</span>
-<span class="s2">printf s,10,34,s,34,10%c&quot;</span><span class="p">;</span><span class="nb">printf</span> <span class="n">s</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">10</span>
-</code></pre>
-</div>
-
-
-
-
-
-
-
-    
-        <p> <a href="/blog/2011/11/12/ruby-quine-blog.html#disqus_thread" class="comments">View comments</a> </p>
     
 
 
