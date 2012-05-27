@@ -8,16 +8,18 @@ type: post
 published: true
 ---
 
-I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on my Arch Linux I thought it might be good to create a brief record of the whole process. [Here](http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525) 
-is the thread that was useful to me to identify and solve the problem.
+I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on Arch Linux I thought it might be good to create a brief record of the whole process. the thread that was useful to me to identify and solve the problem is [here](http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525) 
+.
 
-JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was quite straightforward 
+JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was straightforward:
 
 {% highlight text %}
 ./configure 
 make
 sudo make install
 {% endhighlight %}
+
+I found this [post](http://quote.ucsd.edu/blogs/rogblog/2008/11/09/installing-rjags-on-64-bit-debian-etch/) which describes that you should specify *'--whith-jags-modules' and '--libdir'* options at configuration stage if you are on 64-bit architecture, but it seems this is no more needed (All jags libs were placed in '/usr/local/lib' directory, not in 'lib64' as it was the case earlier).
 
 Next, I tried to install 'rjags' package within R: 
 

@@ -40,10 +40,10 @@
     published: 26 May 2012
 </div>
 
-<p>I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on my Arch Linux I thought it might be good to create a brief record of the whole process. <a href="http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525">Here</a>
-is the thread that was useful to me to identify and solve the problem.</p>
+<p>I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on Arch Linux I thought it might be good to create a brief record of the whole process. the thread that was useful to me to identify and solve the problem is <a href="http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525">here</a>
+.</p>
 
-<p>JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was quite straightforward</p>
+<p>JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was straightforward:</p>
 
 <div class="highlight"><pre><code class="text">./configure 
 make
@@ -51,6 +51,8 @@ sudo make install
 </code></pre>
 </div>
 
+
+<p>I found this <a href="http://quote.ucsd.edu/blogs/rogblog/2008/11/09/installing-rjags-on-64-bit-debian-etch/">post</a> which describes that you should specify <em>'--whith-jags-modules' and '--libdir'</em> options at configuration stage if you are on 64-bit architecture, but it seems this is no more needed (All jags libs were placed in '/usr/local/lib' directory, not in 'lib64' as it was the case earlier).</p>
 
 <p>Next, I tried to install 'rjags' package within R:</p>
 
