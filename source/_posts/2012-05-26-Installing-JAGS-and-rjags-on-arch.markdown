@@ -19,7 +19,7 @@ make
 sudo make install
 {% endhighlight %}
 
-I found this [post](http://quote.ucsd.edu/blogs/rogblog/2008/11/09/installing-rjags-on-64-bit-debian-etch/) which describes that you should specify *'--whith-jags-modules' and '--libdir'* options at configuration stage if you are on 64-bit architecture, but it seems this is no more needed (All jags libs were placed in '/usr/local/lib' directory, not in 'lib64' as it was the case earlier).
+I found this [post](http://quote.ucsd.edu/blogs/rogblog/2008/11/09/installing-rjags-on-64-bit-debian-etch/) which describes that you should specify *'--with-jags-modules' and '--libdir'* options at configuration stage if you are on 64-bit architecture, but it seems this is no more needed (All jags libs were placed in '/usr/local/lib' directory, not in 'lib64' as it was the case earlier).
 
 Next, I tried to install 'rjags' package within R: 
 
