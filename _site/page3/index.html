@@ -37,6 +37,47 @@
     
 
     
+<h1> <a href="/blog/2011/09/17/sed-tip.html"> Editing with sed </a> </h1>
+
+<div class="date">
+    published: 17 Sep 2011
+</div>
+
+<p>I had to deal with some broken csv files today. The Windows's end of line characters ('<sup>M')</sup> were all over the place and some csv rows were broken up into several text lines. They looked something like the following text (one csv row is broken into two text lines with each line ending with '<sup>M'):</sup></p>
+
+<div class="highlight"><pre><code class="bash">29.12.2005;1450,00;5,07;6.036;1399.00;1399.00^M
+;1450.00;-;-;KT^M
+28.12.2005;1380,00;-1,43;4.000;1380.00;1380.00^M
+;1380.00;-;-;KT^M
+27.12.2005;1400,00;-0,64;166;1384.00;1384.00^M
+;1400.00;-;-;KT^M
+</code></pre>
+</div>
+
+
+<p>So, here is the sed solution I came up with after quite a struggle.</p>
+
+<div class="highlight"><pre><code class="bash">sed  -e :a -e <span class="s1">&#39;s/^M//;&#39;</span> -e <span class="s1">&#39;/[0-9]$/N; s/\n//; ta&#39;</span> <span class="se">\</span>
+input_file.csv &gt; output_file.csv
+</code></pre>
+</div>
+
+
+<p>Here is what it does:
+The first expression ':a' creates a named label "a". The second expression substitutes occurrences of '<sup>M'</sup> with an empty string. The third expression looks to see if the current line ends with a digit. If it does, it joins it with the line following it using the "N" command. Then the newline between joined lines is erased with "s/\n//" command. If the substitution was successful further execution is branched to the beginning of expression and do the same again, in case that we might have another digit at the end. If the substitution was not successful, the line did not end with a digit and we print it out.</p>
+
+
+
+
+    
+        <p> <a href="/blog/2011/09/17/sed-tip.html#disqus_thread" class="comments">View comments</a> </p>
+    
+
+
+
+    
+
+    
 <h1> <a href="/blog/2010/10/02/memoizing-functions.html"> Memoizing Functions </a> </h1>
 
 <div class="date">

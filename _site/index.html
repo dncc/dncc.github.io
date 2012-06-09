@@ -37,6 +37,41 @@
     
 
     
+<h1> <a href="/blog/2012/06/09/Rotate-Log-Files-in-Rails-3.html"> Rotate Log Files in Rails 3.2 </a> </h1>
+
+<div class="date">
+    published: 09 Jun 2012
+</div>
+
+<p>The easiest way to rotate Rails 3.2 log files (and they can get
+really huge) is to put the following line in the 'config/environment/developers.rb' file:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="no">AppName</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span>
+  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+  <span class="c1"># auto rotate 2 log files with 5MB each</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;log&quot;</span><span class="o">].</span><span class="n">first</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="o">.</span><span class="n">megabytes</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+
+<p><em>Note: in the earlier versions you could access log file name with
+"config.paths.log.first" call. Not the case any more.
+Now you have to use hash notation as in the snippet above.</em></p>
+
+
+
+
+    
+        <p> <a href="/blog/2012/06/09/Rotate-Log-Files-in-Rails-3.html#disqus_thread" class="comments">View comments</a> </p>
+    
+
+
+
+    
+
+    
 <h1> <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html"> Installing JAGS and rjags on Arch Linux </a> </h1>
 
 <div class="date">
@@ -235,100 +270,6 @@ $(document).ready(function () {
 
     
         <p> <a href="/blog/2012/04/09/sudoku-solver-in-js.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
-
-    
-
-    
-<h1> <a href="/blog/2012/02/19/suspend-and-hibernate-in-arch-linux.html"> Suspend and Hibernate in Arch Linux </a> </h1>
-
-<div class="date">
-    published: 19 Feb 2012
-</div>
-
-<p>In order to suspend your session in Arch Linux (to RAM or disk) you should try to follow the steps from bellow:</p>
-
-<p>First install pm-utils tools with the pacman. No surprises here, just type:</p>
-
-<div class="highlight"><pre><code class="text">sudo pacman -S pm-utils
-</code></pre>
-</div>
-
-
-<p>and heavy lifting will be done with the awesome pacman program. In the case that 'vbetool' and 'acpi' packages are not installed, you will need to install them too with similar incantations.</p>
-
-<p>Suspend to RAM should be enabled imidiatelly. You can check that with the following command:</p>
-
-<div class="highlight"><pre><code class="text">sudo pm-suspend
-</code></pre>
-</div>
-
-
-<p>After this, current session should be saved to RAM and machine put on standby mode.</p>
-
-<p>Hibernation (suspend to disk) needs additional configuration. Receipt that worked for me is listed bellow:</p>
-
-<p>Add to GRUB's config file 'resume' option ('resume=/path/to/swap/drive') by editing the kernel line in the next paragraph:</p>
-
-<div class="highlight"><pre><code class="text">title Arch Linux
-root (hd0,2)
-kernel /vmlinuz-linux root=/dev/sda4 ro
-initrd /initramfs-linux.img
-</code></pre>
-</div>
-
-
-<p>as follows:</p>
-
-<div class="highlight"><pre><code class="text">kernel /vmlinuz-linux root=/dev/sda4 resume=/dev/sda5 ro
-</code></pre>
-</div>
-
-
-<p><em>Note:
-GRUB config file on my machine is '/boot/grub/menu.lst', but if you have GRUB2 it should be '/boot/grub/grub.cfg', also the configuration is somewhat different, look for details <a href="https://wiki.archlinux.org/index.php/Pm-utils#Hibernation_.28suspend2disk.29">here</a> .
-The swap partition on my machine is '/dev/sda5', of course you should change this with the path of your swap partition.</em></p>
-
-<p>Additionally, resume hook should be added to 'etc/mkinitcpio.conf' as follows:</p>
-
-<div class="highlight"><pre><code class="text">HOOKS=&quot;base udev autodetect ide scsi sata lvm2 resume filesystems&quot;
-</code></pre>
-</div>
-
-
-<p>Ordering matters here, so it is important to place resume after ide, scsi, sata and lvm2 and before filesystems. After this, recreate ramdisk environment with:</p>
-
-<div class="highlight"><pre><code class="text">mkinitcpio -p linux
-</code></pre>
-</div>
-
-
-<p>If everything went well set user permissions for pm-utils in '/etc/sudoers' config file as follows:</p>
-
-<div class="highlight"><pre><code class="text">username,hostname=NOPASSWD:/usr/sbin/pm-hibernate, /usr/sbin/pm-suspend
-</code></pre>
-</div>
-
-
-<p>where username and hostname placeholders shoud be actual values. This way you authorize your user to execute pm-hibernate and pm-suspend w/o need to login as superuser each time.</p>
-
-<p>Add aliases to config file of your preferd shell and you are good to go:</p>
-
-<div class="highlight"><pre><code class="text">alias hibernate=&quot;sudo pm-hibernate&quot;
-alias suspend=&quot;sudo pm-suspend&quot;
-</code></pre>
-</div>
-
-
-<p>Happy hacking!</p>
-
-
-
-
-    
-        <p> <a href="/blog/2012/02/19/suspend-and-hibernate-in-arch-linux.html#disqus_thread" class="comments">View comments</a> </p>
     
 
 
