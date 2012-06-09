@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="en"/>
+    <meta name="robots" content="index,follow"/>
+    <title>
+        
+            Rotate Log Files in Rails 3.2
+        
+    </title>
+    <link rel="stylesheet" href="/css/style-pulp.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/syntax.css" media="screen" type="text/css"/>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/index.html"> Pulp Programming </a>
+            <div class="subtitle">
+                <p> less of a cathedral, more of a bazaar </p>
+            </div>
+
+            <div class="navigation">
+                  <a href="/">/home</a>
+                  <a href="/pages/archive.html">/archive</a>
+                  <!--a href="/pages/about.html">/about</a-->
+            </div>
+
+        </div>
+
+        <div class="content">
+            
+
+<h1> <a href="/blog/2012/06/09/Rotate-Log-Files-in-Rails-3.2.html"> Rotate Log Files in Rails 3.2 </a> </h1>
+
+<div class="date">
+    published: 09 Jun 2012
+</div>
+
+<p>The easiest way to rotate Rails 3.2 log files (and they can get
+really huge) is to put the following line in the 'config/environments/development.rb' file:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="no">AppName</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span>
+  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+  <span class="c1"># auto rotate 2 log files with 5MB each</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;log&quot;</span><span class="o">].</span><span class="n">first</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="o">.</span><span class="n">megabytes</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+
+<p><em>Note: in the earlier versions you could access log file name with
+"config.paths.log.first" call. Not the case any more.
+Now you have to use hash notation as in the snippet above.</em></p>
+
+
+
+
+
+    
+    <div id="contributions">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+
+	var disqus_shortname = 'pulpprogramming'; 
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+
+
+<div class="leftright">
+    
+
+    
+        <div class="right">
+            <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html"> Installing JAGS and rjags on Arch Linux </a> &raquo;
+        </div>
+    
+</div>
+
+
+
+        </div>
+        <div class="push"></div>
+    </div>
+    <!--
+<div class="footer">
+    <div>
+        <h1> Archives </h1>
+        <ul>
+            <li> <a href="/archives.html">Archives</a> </li>
+        </ul>
+        <br/>
+    </div>
+
+    <div>
+        <h1> Meta </h1>
+        <ul>
+            <li> <a href="/atom.xml">RSS</a> </li>
+            <li> <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> </li>
+            <li> <a href="http://jigsaw.w3.org/css-validator/check/referer">Valid CSS</a> </li>
+        </ul>
+    </div>
+
+    <div>
+      <h1> Blogroll </h1>
+        <ul>
+            <li> <a href="https://github.com/">Github</a> </li>
+            <li> <a href="https://github.com/mojombo/jekyll/">Jekyll Home</a> </li>
+            <li> <a href="http://pages.github.com/">Pages tutorial</a> </li>
+        </ul>
+    </div>
+</div>
+
+ -->
+    <div class="copyright"> 
+        Powered by
+        <a href="https://github.com/mojombo/jekyll/wiki">Jekyll</a> and
+        <a href="http://www.heroku.com/">Heroku</a> 
+    </div>
+</body>
+</html>
+

@@ -9,7 +9,7 @@ published: true
 ---
 
 The easiest way to rotate Rails 3.2 log files (and they can get
-really huge) is to put the following line in the 'config/environment/developers.rb' file:
+really huge) is to put the following line in the 'config/environments/development.rb' file:
 
 {% highlight ruby %}
 AppName::Application.configure do
