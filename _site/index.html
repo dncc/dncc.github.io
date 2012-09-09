@@ -83,7 +83,7 @@ Now you have to use hash notation as in the snippet above.</em></p>
 
 <p>JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was straightforward:</p>
 
-<div class="highlight"><pre><code class="text">./configure 
+<div class="highlight"><pre><code class="text">./configure
 make
 sudo make install
 </code></pre>
@@ -94,7 +94,7 @@ sudo make install
 
 <p>Next, I tried to install 'rjags' package within R:</p>
 
-<div class="highlight"><pre><code class="text">install.packages(&#39;rjags&#39;) 
+<div class="highlight"><pre><code class="text">install.packages(&#39;rjags&#39;)
 </code></pre>
 </div>
 
@@ -102,15 +102,15 @@ sudo make install
 <p>and I got this error message:</p>
 
 <div class="highlight"><pre><code class="text">...
-*** installing help indices 
-** building package indices ... 
+*** installing help indices
+** building package indices ...
 Error : .onLoad failed in loadNamespace() for &#39;rjags&#39;, details:
-call: dyn.load(file, DLLpath = DLLpath, ...) 
-error: unable to load shared object 
-&#39;/usr/local/lib/R/site-library/rjags/libs/rjags.so&#39;: 
-libjags.so.3: cannot open shared object file: 
-No such file or directory 
-ERROR: installing package indices failed * 
+call: dyn.load(file, DLLpath = DLLpath, ...)
+error: unable to load shared object
+&#39;/usr/local/lib/R/site-library/rjags/libs/rjags.so&#39;:
+libjags.so.3: cannot open shared object file:
+No such file or directory
+ERROR: installing package indices failed *
 removing &#39;/usr/local/lib/R/site-library/rjags&#39;
 ...
 </code></pre>
@@ -141,7 +141,7 @@ CMD INSTALL ~/downloads/rjags_3-2.tar.gz
 
 <p>and this time it was installed!</p>
 
-<p>It remains just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself owfully rich ;).</p>
+<p>It remains just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself awfully rich ;).</p>
 
 
 
