@@ -50,7 +50,7 @@ The easiest way to integrate C, D and E with *all* previous code-review commits 
 
 {% highlight text %}
 
-git rebase --onto <E-sha1>
+git rebase <E-sha1>
 
 {% endhighlight %}
 
