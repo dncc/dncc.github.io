@@ -90,11 +90,32 @@
 <p>However, let's say I want to integrate only commits F and G with the C, D, and E from the develop branch. In that case I would use git <em>rebase</em> with --onto option as follows:</p>
 
 <div class="highlight"><pre><code class="text">git rebase --onto &lt;E-sha1&gt; &lt;B-sha1&gt; &lt;G-sha1&gt;
+git checkout -b temp
+git checkout code-review
+git reset --hard temp
+git branch -d temp
 </code></pre>
 </div>
 
 
-<p>This basically says <em>move all commits between B (not including it) and G (including it) onto E commit</em>. After the command is successfully finished the repository should look like this:</p>
+<p>The first command basically says <em>move all commits between B (not including it) and G (including it) onto E commit</em>. After <em>rebase</em> is successfully finished the repository should look like this:</p>
+
+<div class="highlight"><pre><code class="text">                       F---G---H code-review
+                      /
+                     /           F---G (no-branch)
+                    /           /
+               A---B---C---D---E---X develop
+</code></pre>
+</div>
+
+
+<p>There is a new (no-branch) HEAD that is in so called <em>detached</em> state.
+In other words it's simply a commit hash which isn't pointed to by a tag or a branch.
+Basically, whenever you check out a non-referenced head, you end up with a detached
+head. In practice some conflicts may arise at this stage. To efficiently resolve them I recommend <a href="https://github.com/jwiegley/git-scripts/blob/master/git-rm-conflicts">git-rm-conflicts</a> script written by John Wiegley.</p>
+
+<p>Next I create <em>'temp'</em> branch to point to detached HEAD, and then checkout to <em>'code-review'</em>. The <em>'code-review'</em> branch pointer is then forcibly moved with <em>git reset --hard temp</em> to point to the same place as <em>'temp'</em>. At the end <em>'temp'</em> branch is deleted
+so final repository should look like this:</p>
 
 <div class="highlight"><pre><code class="text">                                 F---G code-review
                                 /
@@ -103,9 +124,7 @@
 </div>
 
 
-<p>In practice often some conflicts arise along the way. To efficiently resolve them I recommend <a href="https://github.com/jwiegley/git-scripts/blob/master/git-rm-conflicts">git-rm-conflicts</a> script written by John Wiegley.</p>
-
-<p>The script that is written bellow is, also, very handy for reviewing branches and project history:</p>
+<p>And for the end, here is the script that is very handy for reviewing branches and project history:</p>
 
 <div class="highlight"><pre><code class="text">git log --graph --decorate --pretty=oneline --abbrev-commit develop code-review
 some-other-branch

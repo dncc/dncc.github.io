@@ -71,12 +71,35 @@ However, let's say I want to integrate only commits F and G with the C, D, and E
 {% highlight text %}
 
 git rebase --onto <E-sha1> <B-sha1> <G-sha1>
+git checkout -b temp
+git checkout code-review
+git reset --hard temp
+git branch -d temp
 
 {% endhighlight %}
 
-This basically says *move all commits between B (not including it) and G (including it) onto E commit*. After the command is successfully finished the repository should look like this:
+The first command basically says *move all commits between B (not including it) and G (including it) onto E commit*. After *rebase* is successfully finished the repository should look like this:
 
 {% highlight text %}
+
+                       F---G---H code-review
+                      /
+                     /           F---G (no-branch)
+                    /           /
+               A---B---C---D---E---X develop
+
+{% endhighlight %}
+
+There is a new (no-branch) HEAD that is in so called *detached* state.
+In other words it's simply a commit hash which isn't pointed to by a tag or a branch.
+Basically, whenever you check out a non-referenced head, you end up with a detached
+head. In practice some conflicts may arise at this stage. To efficiently resolve them I recommend [git-rm-conflicts](https://github.com/jwiegley/git-scripts/blob/master/git-rm-conflicts) script written by John Wiegley.
+
+Next I create *'temp'* branch to point to detached HEAD, and then checkout to *'code-review'*. The *'code-review'* branch pointer is then forcibly moved with *git reset --hard temp* to point to the same place as *'temp'*. At the end *'temp'* branch is deleted
+so final repository should look like this:
+
+{% highlight text %}
+
 
                                  F---G code-review
                                 /
@@ -85,9 +108,7 @@ This basically says *move all commits between B (not including it) and G (includ
 {% endhighlight %}
 
 
-In practice often some conflicts arise along the way. To efficiently resolve them I recommend [git-rm-conflicts](https://github.com/jwiegley/git-scripts/blob/master/git-rm-conflicts) script written by John Wiegley.
-
-The script that is written bellow is, also, very handy for reviewing branches and project history:
+And for the end, here is the script that is very handy for reviewing branches and project history:
 
 {% highlight text %}
 
