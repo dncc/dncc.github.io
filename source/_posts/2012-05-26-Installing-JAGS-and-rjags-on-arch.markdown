@@ -8,38 +8,38 @@ type: post
 published: true
 ---
 
-I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on Arch Linux I thought it might be good to create a brief record of the whole process. the thread that was useful to me to identify and solve the problem is [here](http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525) 
+I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on Arch Linux I thought it might be good to create a brief record of the whole process. the thread that was useful to me to identify and solve the problem is [here](http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525)
 .
 
 JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was straightforward:
 
 {% highlight text %}
-./configure 
+./configure
 make
 sudo make install
 {% endhighlight %}
 
 I found this [post](http://quote.ucsd.edu/blogs/rogblog/2008/11/09/installing-rjags-on-64-bit-debian-etch/) which describes that you should specify *'--with-jags-modules' and '--libdir'* options at configuration stage if you are on 64-bit architecture, but it seems this is no more needed (All jags libs were placed in '/usr/local/lib' directory, not in 'lib64' as it was the case at the time the post was written).
 
-Next, I tried to install 'rjags' package within R: 
+Next, I tried to install 'rjags' package within R:
 
 {% highlight text %}
-install.packages('rjags') 
+install.packages('rjags')
 {% endhighlight %}
 
-and I got this error message: 
+and I got this error message:
 
 {% highlight text %}
 ...
-*** installing help indices 
-** building package indices ... 
+*** installing help indices
+** building package indices ...
 Error : .onLoad failed in loadNamespace() for 'rjags', details:
-call: dyn.load(file, DLLpath = DLLpath, ...) 
-error: unable to load shared object 
-'/usr/local/lib/R/site-library/rjags/libs/rjags.so': 
-libjags.so.3: cannot open shared object file: 
-No such file or directory 
-ERROR: installing package indices failed * 
+call: dyn.load(file, DLLpath = DLLpath, ...)
+error: unable to load shared object
+'/usr/local/lib/R/site-library/rjags/libs/rjags.so':
+libjags.so.3: cannot open shared object file:
+No such file or directory
+ERROR: installing package indices failed *
 removing '/usr/local/lib/R/site-library/rjags'
 ...
 {% endhighlight %}
@@ -63,9 +63,9 @@ sudo R --with-jags-modules=/usr/local/lib/JAGS/modules-3 \
 CMD INSTALL ~/downloads/rjags_3-2.tar.gz
 {% endhighlight %}
 
-and this time it was installed! 
+and this time it was installed!
 
-It remains just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself owfully rich ;).  
+It remains just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself awfully rich ;).
 
 
 
