@@ -8,7 +8,7 @@
     <meta name="robots" content="index,follow"/>
     <title>
         
-            Pulp Programming
+            Browse and change code history with Git
         
     </title>
     <link rel="stylesheet" href="/css/style-pulp.css" media="screen" type="text/css"/>
@@ -34,9 +34,6 @@
         <div class="content">
             
 
-    
-
-    
 <h1> <a href="/blog/2012/09/08/Browse-and-change-code-with-Git.html"> Browse and change code history with Git </a> </h1>
 
 <div class="date">
@@ -140,127 +137,24 @@ code-review some-other-branch
 
 
 
-    
-        <p> <a href="/blog/2012/09/08/Browse-and-change-code-with-Git.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
 
     
+    <div id="contributions">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
 
-    
-<h1> <a href="/blog/2012/06/09/Rotate-Log-Files-in-Rails-3.2.html"> Rotate Log Files in Rails 3.2 </a> </h1>
+	var disqus_shortname = 'pulpprogramming'; 
 
-<div class="date">
-    published: 09 Jun 2012
-</div>
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
 
-<p>The easiest way to rotate Rails 3.2 log files (and they can get
-really huge) is to put the following line in the 'config/environments/development.rb' file:</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="no">AppName</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span>
-  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-  <span class="c1"># auto rotate 2 log files with 5MB each</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;log&quot;</span><span class="o">].</span><span class="n">first</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="o">.</span><span class="n">megabytes</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-
-<p><em>Note: in the earlier versions you could access log file name with
-"config.paths.log.first" call. Not the case any more.
-Now you have to use hash notation as in the snippet above.</em></p>
-
-
-
-
-    
-        <p> <a href="/blog/2012/06/09/Rotate-Log-Files-in-Rails-3.2.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
-
-    
-
-    
-<h1> <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html"> Installing JAGS and rjags on Arch Linux </a> </h1>
-
-<div class="date">
-    published: 26 May 2012
-</div>
-
-<p>I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on Arch Linux I thought it might be good to create a brief record of the whole process. the thread that was useful to me to identify and solve the problem is <a href="http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525">here</a>
-.</p>
-
-<p>JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was straightforward:</p>
-
-<div class="highlight"><pre><code class="text">./configure
-make
-sudo make install
-</code></pre>
-</div>
-
-
-<p>I found this <a href="http://quote.ucsd.edu/blogs/rogblog/2008/11/09/installing-rjags-on-64-bit-debian-etch/">post</a> which describes that you should specify <em>'--with-jags-modules' and '--libdir'</em> options at configuration stage if you are on 64-bit architecture, but it seems this is no more needed (All jags libs were placed in '/usr/local/lib' directory, not in 'lib64' as it was the case at the time the post was written).</p>
-
-<p>Next, I tried to install 'rjags' package within R:</p>
-
-<div class="highlight"><pre><code class="text">install.packages(&#39;rjags&#39;)
-</code></pre>
-</div>
-
-
-<p>and I got this error message:</p>
-
-<div class="highlight"><pre><code class="text">...
-*** installing help indices
-** building package indices ...
-Error : .onLoad failed in loadNamespace() for &#39;rjags&#39;, details:
-call: dyn.load(file, DLLpath = DLLpath, ...)
-error: unable to load shared object
-&#39;/usr/local/lib/R/site-library/rjags/libs/rjags.so&#39;:
-libjags.so.3: cannot open shared object file:
-No such file or directory
-ERROR: installing package indices failed *
-removing &#39;/usr/local/lib/R/site-library/rjags&#39;
-...
-</code></pre>
-</div>
-
-
-<p>First, I tried various things with the previous R function (some of which, for instance, were to include 'dependecies=TRUE' and jags module paths as arguments to this function). That didn't work. After quite a few failed trials I found out that jags libraries were in '/usr/local/lib' directory and it was not included in my linker path. I checked this with:</p>
-
-<div class="highlight"><pre><code class="bash">sudo ldconfig -p | grep <span class="nb">local</span>
-</code></pre>
-</div>
-
-
-<p>and since '/usr/local/lib' didn't appear on <em>stdout</em> I added this line in the new '/etc/ld.so.conf.d/jags.conf' file. Than, in order to activate linker paths and check if '/usr/local/lib' was included I run:</p>
-
-<div class="highlight"><pre><code class="bash">sudo ldconfig -v | grep /usr/local/lib
-</code></pre>
-</div>
-
-
-<p>I tried 'rjags' installation again with:</p>
-
-<div class="highlight"><pre><code class="text">sudo R --with-jags-modules=/usr/local/lib/JAGS/modules-3 \
-CMD INSTALL ~/downloads/rjags_3-2.tar.gz
-</code></pre>
-</div>
-
-
-<p>and this time it was installed!</p>
-
-<p>It remains just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself awfully rich ;).</p>
-
-
-
-
-    
-        <p> <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html#disqus_thread" class="comments">View comments</a> </p>
-    
 
 
 
@@ -270,11 +164,10 @@ CMD INSTALL ~/downloads/rjags_3-2.tar.gz
 
     
         <div class="right">
-            <a href="/page2/index.html"> Previous entries </a> &raquo;
+            <a href="/blog/2012/06/09/Rotate-Log-Files-in-Rails-3.2.html"> Rotate Log Files in Rails 3.2 </a> &raquo;
         </div>
     
 </div>
-
 
 
 
