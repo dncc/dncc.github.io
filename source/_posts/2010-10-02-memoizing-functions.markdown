@@ -16,10 +16,10 @@ meta:
 
 I've been going  through some parts of [The Ruby Programming Language](http://oreilly.com/catalog/9780596516178/) book recently, the best book about Ruby language I've read and here are some interesting bits about memoization that I found:
 
-> Memoization is a functional programming term for caching the results of 
-> a function invocation. If a function always returns the same value when 
-> passed the same arguments, if there is reason to believe that the same 
-> arguments will be used repeatedly, and if the computation it performs 
+> Memoization is a functional programming term for caching the results of
+> a function invocation. If a function always returns the same value when
+> passed the same arguments, if there is reason to believe that the same
+> arguments will be used repeatedly, and if the computation it performs
 > is somewhat expensive, then memoization may be a useful optimization...
 
 While I was reading about basic functional programming concepts, I picked up some FP terminology. For instance *"a function always returns the same value when passed the same arguments"* is called **referential transparency** in FP lingo, which is important concept since it assumes variables are non mutable. With this feature, chances of a bug occurring as a result of so called (mutability) **side effects** cease to exist.
@@ -78,7 +78,7 @@ bad this can be. Even with such a bad choise our friend memoization might save u
 
 First we need to slightly modify the above fib_wo_mem function:
 
-{% highlight ruby %}  
+{% highlight ruby %}
 fib_with_mem = lambda do |n|
     return 0 if n == 0
     return 1 if n == 1
@@ -88,7 +88,7 @@ fib_with_mem = lambda do |n|
 
 Let's compare these two:
 
-{% highlight ruby %}  
+{% highlight ruby %}
 Benchmark.bmbm{ |x|
    x.report('fib_with_mem'){ fib_with_mem[20] }
    x.report('fib_wo_mem'){ fib_wo_mem[20] }
@@ -124,7 +124,7 @@ lin_fib_iter = lambda do |a, b, n|
   return b if n == 0
   lin_fib_iter[a+b, a, n-1]
 end
-# While lin_fib_iter is a recursive procedure, 
+# While lin_fib_iter is a recursive procedure,
 # computation itself is iterative.
 {% endhighlight %}
 
@@ -148,5 +148,5 @@ Benchmark.bmbm{ |x|
 Even for a small number such as 1000, iterative solution is more than 10 times faster (for the first execution). This is expected, since the iterative solution has linear, while the first solution has exponential growth WRT n. Although the tree-recursive-memoized version is about 30 times faster the second time (everything is already cached) it is not right approach for the given problem (not just because "stack level too deep" error begins to occur already at n = 1500 ). This does not  imply that tree recursive processes are useless. On contrary they can be natural solutions for some classes of problems.
 
 *Note: Implementations of the Fibonnaci functions are translated from their orginal Scheme versions which can be found in
-the one of the CS's classics:  [Structure and Interpretation of Computer Programs](http://mitpress.mit.edu/sicp/full-text/book/book.html).* 
+the one of the CS's classics:  [Structure and Interpretation of Computer Programs](http://mitpress.mit.edu/sicp/full-text/book/book.html).*
 

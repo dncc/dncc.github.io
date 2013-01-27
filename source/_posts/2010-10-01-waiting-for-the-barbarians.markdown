@@ -9,52 +9,52 @@ published: true
 ---
 
 *What are we waiting for, assembled in the forum?*
- 
+
 *The barbarians are to arrive today.*
 
-*Why such inaction in the Senate?  
+*Why such inaction in the Senate?
 Why do the Senators sit and pass no laws?*
- 
-*Because the barbarians are to arrive today.  
-What laws can the Senators pass any more?  
+
+*Because the barbarians are to arrive today.
+What laws can the Senators pass any more?
 When the barbarians come they will make the laws.*
- 
-*Why did our emperor wake up so early,  
-and sits at the greatest gate of the city,  
+
+*Why did our emperor wake up so early,
+and sits at the greatest gate of the city,
 on the throne, solemn, wearing the crown?*
- 
-*Because the barbarians are to arrive today.  
-and the emperor waits to receive  
-heir chief.  Indeed he has prepared  
-to give him a scroll.  Therein he inscribed  
+
+*Because the barbarians are to arrive today.
+and the emperor waits to receive
+heir chief.  Indeed he has prepared
+to give him a scroll.  Therein he inscribed
 any titles and names of honor.*
- 
-*Why have our two consuls and the praetors come out  
-today in their red, embroidered togas;  
-why do they wear amethyst-studded bracelets,  
-and rings with brilliant, glittering emeralds;  
-why are they carrying costly canes today,  
+
+*Why have our two consuls and the praetors come out
+today in their red, embroidered togas;
+why do they wear amethyst-studded bracelets,
+and rings with brilliant, glittering emeralds;
+why are they carrying costly canes today,
 wonderfully carved with silver and gold?*
- 
-*Because the barbarians are to arrive today,  
+
+*Because the barbarians are to arrive today,
 and such things dazzle the barbarians.*
- 
-*Why don't the worthy orators come as always  
+
+*Why don't the worthy orators come as always
 to make their speeches, to have their say?*
- 
-*Because the barbarians are to arrive today;  
+
+*Because the barbarians are to arrive today;
 and they get bored with eloquence and orations.*
- 
-*Why all of a sudden this unrest  
-and confusion. (How solemn the faces have become).  
-why are the streets and squares clearing quickly,  
+
+*Why all of a sudden this unrest
+and confusion. (How solemn the faces have become).
+why are the streets and squares clearing quickly,
 and all return to their homes, so deep in thought?*
- 
-*Because night is here but the barbarians have not come.  
-and some people arrived from the borders,  
+
+*Because night is here but the barbarians have not come.
+and some people arrived from the borders,
 and said that there are no longer any barbarians.*
- 
-*And now what shall become of us without any barbarians?  
+
+*And now what shall become of us without any barbarians?
 those people were some kind of solution.*
 
 *Constantine P. Cavafy (1904)*

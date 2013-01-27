@@ -6,5 +6,5 @@ gem 'mime-types'
 group :development do
   gem 'jekyll'
   gem 'rdiscount'
-  gem 'hpricot'  
+  gem 'hpricot'
 end

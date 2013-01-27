@@ -108,8 +108,7 @@ bad this can be. Even with such a bad choise our friend memoization might save u
 
 <p>First we need to slightly modify the above fib_wo_mem function:</p>
 
-<div class="highlight"><pre><code class="ruby">  
-<span class="n">fib_with_mem</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+<div class="highlight"><pre><code class="ruby"><span class="n">fib_with_mem</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
 <span class="err">   </span> <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span>
 <span class="err">   </span> <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span>
 <span class="err">   </span> <span class="n">fib_with_mem</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib_with_mem</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
@@ -120,8 +119,7 @@ bad this can be. Even with such a bad choise our friend memoization might save u
 
 <p>Let's compare these two:</p>
 
-<div class="highlight"><pre><code class="ruby">  
-<span class="no">Benchmark</span><span class="o">.</span><span class="n">bmbm</span><span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+<div class="highlight"><pre><code class="ruby"><span class="no">Benchmark</span><span class="o">.</span><span class="n">bmbm</span><span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
    <span class="n">x</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;fib_with_mem&#39;</span><span class="p">){</span> <span class="n">fib_with_mem</span><span class="o">[</span><span class="mi">20</span><span class="o">]</span> <span class="p">}</span>
    <span class="n">x</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s1">&#39;fib_wo_mem&#39;</span><span class="p">){</span> <span class="n">fib_wo_mem</span><span class="o">[</span><span class="mi">20</span><span class="o">]</span> <span class="p">}</span>
 <span class="p">}</span>
@@ -157,7 +155,7 @@ from the sequence as an input, and produce next two as an output which than will
 <span class="err"> </span> <span class="k">return</span> <span class="n">b</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span>
 <span class="err"> </span> <span class="n">lin_fib_iter</span><span class="o">[</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span>
 <span class="k">end</span>
-<span class="c1"># While lin_fib_iter is a recursive procedure, </span>
+<span class="c1"># While lin_fib_iter is a recursive procedure,</span>
 <span class="c1"># computation itself is iterative.</span>
 </code></pre>
 </div>

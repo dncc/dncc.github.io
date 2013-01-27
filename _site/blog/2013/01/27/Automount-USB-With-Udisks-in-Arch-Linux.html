@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="en"/>
+    <meta name="robots" content="index,follow"/>
+    <title>
+        
+            Automount With Udisks in Arch Linux
+        
+    </title>
+    <link rel="stylesheet" href="/css/style-pulp.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/syntax.css" media="screen" type="text/css"/>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/index.html"> Pulp Programming </a>
+            <div class="subtitle">
+                <p> less of a cathedral, more of a bazaar </p>
+            </div>
+
+            <div class="navigation">
+                  <a href="/">/home</a>
+                  <a href="/pages/archive.html">/archive</a>
+                  <!--a href="/pages/about.html">/about</a-->
+            </div>
+
+        </div>
+
+        <div class="content">
+            
+
+<h1> <a href="/blog/2013/01/27/Automount-USB-With-Udisks-in-Arch-Linux.html"> Automount With Udisks in Arch Linux </a> </h1>
+
+<div class="date">
+    published: 27 Jan 2013
+</div>
+
+<p>When it became obvious that <em>systemd</em> was going to replace <em>sysvinit</em> and
+<em>init scripts</em> I switched to <em>systemd</em> and experienced several issues in the
+process. One of those was that the system couldn't automount usb drives
+any more.</p>
+
+<p>Before the transition I used <em>devmon</em> which was started in <em>.xinitrc</em>
+before windows manager with <em>ck-launch-session bash -c "devmon &amp; ..."</em>
+command and it worked seamlessly. However, after the upgrade
+the devmon was broken. No matter whether it was issued manually in
+terminal or from the .xinitrc script, it reported the following error:</p>
+
+<div class="highlight"><pre><code class="text">Poll for media failed: Not Authorized
+    device: [/dev/sdb1]
+    ...
+    mountdev /dev/sdb1 DNC vfat
+devmon: mount /dev/sdb1 --mount-options noexec,nosuid,noatime    (DNC)
+Mount failed: Not Authorized
+devmon: error mounting /dev/sdb1 (0)
+...
+udisks functions are not authorized through policykit,
+so devmon cannot automount drives.
+...
+</code></pre>
+</div>
+
+
+<p>I also tried <em>udiskie</em>, another automatic disk mounter that uses
+<em>udisks</em>, and it failed to mount disk with the similar message:</p>
+
+<div class="highlight"><pre><code class="text">attempting to mount device /org/freedesktop/UDisks/devices/sdb1 (vfat:[])
+failed to mount device /org/freedesktop/UDisks/devices/sdb1:
+  org.freedesktop.UDisks.Error.PermissionDenied: Not Authorized
+</code></pre>
+</div>
+
+
+<p>Obviously the problem was not <em>devmon</em>, nor <em>udiskie</em>. Somehow <em>udisks</em> functions
+were no longer authorized through <em>policykit</em>... It was clear that I should
+famialirize myself with <em>polkit</em> and find out how to authorize <em>udisks</em> actions.</p>
+
+<p>From <em>polkit(8)</em> manpages I learned that in order to authorize
+disk mounting I should write <em>polkit</em> rule. These rules are placed in
+<em>/etc/polkit-1/rules.d/</em> and <em>/usr/share/polkit-1/rules.d/</em> directories in
+files with <em>.rules</em> extension. Both directories are monitored by <em>polkitd</em>
+process. If rule is changed, added or removed all rules are processed
+again.</p>
+
+<p>So I added <em>/etc/polkit-1/rules.d/10-udisks-automount.rules</em> file with
+following rule:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">polkit</span><span class="p">.</span><span class="nx">addRule</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="nx">subject</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="s2">&quot;org.freedesktop.udisks.filesystem-mount&quot;</span> <span class="o">&amp;&amp;</span>
+                <span class="nx">subject</span><span class="p">.</span><span class="nx">isInGroup</span><span class="p">(</span><span class="s2">&quot;storage&quot;</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">polkit</span><span class="p">.</span><span class="nx">Result</span><span class="p">.</span><span class="nx">YES</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+
+<p>Basically it says that <em>udisks</em> mount action should be allowed to the users
+in the <em>storage</em> group. Values for <em>action.id</em> as well as other information
+about <em>polkit</em> authorization policies can be found in <em>/usr/share/polkit-1/actions</em>
+directory. Particularly, the policy for the <em>udisks</em> is placed in
+<em>org.freedesktop.udisks.policy</em> file. All rules are written in JavaScript.</p>
+
+<p>After this rule was added, <em>devmon</em> and <em>udiskie</em> started to work as expected
+so I haven't searched further. For that reason I suppose that what I've presented
+here is probably quick and dirty solution. It should serve just as a remainder
+to me in the future and it might also help someone with the similar problem.
+More comprehensive coverage of <em>udev</em>, <em>udisks</em> and <em>polkit</em> can be found on the
+<a href="https://wiki.archlinux.org/index.php/Udev#Udisks">Arch wiki pages for udev</a>
+and with <em>man polkit(8)</em>.</p>
+
+
+
+
+
+    
+    <div id="contributions">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+
+	var disqus_shortname = 'pulpprogramming'; 
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+
+
+<div class="leftright">
+    
+
+    
+        <div class="right">
+            <a href="/blog/2012/09/08/Browse-and-change-code-with-Git.html"> Browse and change code history with Git </a> &raquo;
+        </div>
+    
+</div>
+
+
+
+        </div>
+        <div class="push"></div>
+    </div>
+    <!--
+<div class="footer">
+    <div>
+        <h1> Archives </h1>
+        <ul>
+            <li> <a href="/archives.html">Archives</a> </li>
+        </ul>
+        <br/>
+    </div>
+
+    <div>
+        <h1> Meta </h1>
+        <ul>
+            <li> <a href="/atom.xml">RSS</a> </li>
+            <li> <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> </li>
+            <li> <a href="http://jigsaw.w3.org/css-validator/check/referer">Valid CSS</a> </li>
+        </ul>
+    </div>
+
+    <div>
+      <h1> Blogroll </h1>
+        <ul>
+            <li> <a href="https://github.com/">Github</a> </li>
+            <li> <a href="https://github.com/mojombo/jekyll/">Jekyll Home</a> </li>
+            <li> <a href="http://pages.github.com/">Pages tutorial</a> </li>
+        </ul>
+    </div>
+</div>
+
+ -->
+    <div class="copyright"> 
+        Powered by
+        <a href="https://github.com/mojombo/jekyll/wiki">Jekyll</a> and
+        <a href="http://www.heroku.com/">Heroku</a> 
+    </div>
+</body>
+</html>
+

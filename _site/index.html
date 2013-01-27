@@ -37,6 +37,98 @@
     
 
     
+<h1> <a href="/blog/2013/01/27/Automount-USB-With-Udisks-in-Arch-Linux.html"> Automount With Udisks in Arch Linux </a> </h1>
+
+<div class="date">
+    published: 27 Jan 2013
+</div>
+
+<p>When it became obvious that <em>systemd</em> was going to replace <em>sysvinit</em> and
+<em>init scripts</em> I switched to <em>systemd</em> and experienced several issues in the
+process. One of those was that the system couldn't automount usb drives
+any more.</p>
+
+<p>Before the transition I used <em>devmon</em> which was started in <em>.xinitrc</em>
+before windows manager with <em>ck-launch-session bash -c "devmon &amp; ..."</em>
+command and it worked seamlessly. However, after the upgrade
+the devmon was broken. No matter whether it was issued manually in
+terminal or from the .xinitrc script, it reported the following error:</p>
+
+<div class="highlight"><pre><code class="text">Poll for media failed: Not Authorized
+    device: [/dev/sdb1]
+    ...
+    mountdev /dev/sdb1 DNC vfat
+devmon: mount /dev/sdb1 --mount-options noexec,nosuid,noatime    (DNC)
+Mount failed: Not Authorized
+devmon: error mounting /dev/sdb1 (0)
+...
+udisks functions are not authorized through policykit,
+so devmon cannot automount drives.
+...
+</code></pre>
+</div>
+
+
+<p>I also tried <em>udiskie</em>, another automatic disk mounter that uses
+<em>udisks</em>, and it failed to mount disk with the similar message:</p>
+
+<div class="highlight"><pre><code class="text">attempting to mount device /org/freedesktop/UDisks/devices/sdb1 (vfat:[])
+failed to mount device /org/freedesktop/UDisks/devices/sdb1:
+  org.freedesktop.UDisks.Error.PermissionDenied: Not Authorized
+</code></pre>
+</div>
+
+
+<p>Obviously the problem was not <em>devmon</em>, nor <em>udiskie</em>. Somehow <em>udisks</em> functions
+were no longer authorized through <em>policykit</em>... It was clear that I should
+famialirize myself with <em>polkit</em> and find out how to authorize <em>udisks</em> actions.</p>
+
+<p>From <em>polkit(8)</em> manpages I learned that in order to authorize
+disk mounting I should write <em>polkit</em> rule. These rules are placed in
+<em>/etc/polkit-1/rules.d/</em> and <em>/usr/share/polkit-1/rules.d/</em> directories in
+files with <em>.rules</em> extension. Both directories are monitored by <em>polkitd</em>
+process. If rule is changed, added or removed all rules are processed
+again.</p>
+
+<p>So I added <em>/etc/polkit-1/rules.d/10-udisks-automount.rules</em> file with
+following rule:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">polkit</span><span class="p">.</span><span class="nx">addRule</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="nx">subject</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="s2">&quot;org.freedesktop.udisks.filesystem-mount&quot;</span> <span class="o">&amp;&amp;</span>
+                <span class="nx">subject</span><span class="p">.</span><span class="nx">isInGroup</span><span class="p">(</span><span class="s2">&quot;storage&quot;</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">polkit</span><span class="p">.</span><span class="nx">Result</span><span class="p">.</span><span class="nx">YES</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+
+<p>Basically it says that <em>udisks</em> mount action should be allowed to the users
+in the <em>storage</em> group. Values for <em>action.id</em> as well as other information
+about <em>polkit</em> authorization policies can be found in <em>/usr/share/polkit-1/actions</em>
+directory. Particularly, the policy for the <em>udisks</em> is placed in
+<em>org.freedesktop.udisks.policy</em> file. All rules are written in JavaScript.</p>
+
+<p>After this rule was added, <em>devmon</em> and <em>udiskie</em> started to work as expected
+so I haven't searched further. For that reason I suppose that what I've presented
+here is probably quick and dirty solution. It should serve just as a remainder
+to me in the future and it might also help someone with the similar problem.
+More comprehensive coverage of <em>udev</em>, <em>udisks</em> and <em>polkit</em> can be found on the
+<a href="https://wiki.archlinux.org/index.php/Udev#Udisks">Arch wiki pages for udev</a>
+and with <em>man polkit(8)</em>.</p>
+
+
+
+
+    
+        <p> <a href="/blog/2013/01/27/Automount-USB-With-Udisks-in-Arch-Linux.html#disqus_thread" class="comments">View comments</a> </p>
+    
+
+
+
+    
+
+    
 <h1> <a href="/blog/2012/09/08/Browse-and-change-code-with-Git.html"> Browse and change code history with Git </a> </h1>
 
 <div class="date">
@@ -177,89 +269,6 @@ Now you have to use hash notation as in the snippet above.</em></p>
 
     
         <p> <a href="/blog/2012/06/09/Rotate-Log-Files-in-Rails-3.2.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
-
-    
-
-    
-<h1> <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html"> Installing JAGS and rjags on Arch Linux </a> </h1>
-
-<div class="date">
-    published: 26 May 2012
-</div>
-
-<p>I have been evaluating available options for developing Bayesian and state-space models in R recently so I stumbled upon JAGS and rjags. Since I had trouble to install them on Arch Linux I thought it might be good to create a brief record of the whole process. the thread that was useful to me to identify and solve the problem is <a href="http://sourceforge.net/projects/mcmc-jags/forums/forum/610037/topic/4996525">here</a>
-.</p>
-
-<p>JAGS installation went well. There was no standard Arch package for JAGS so I built it from the source, which was straightforward:</p>
-
-<div class="highlight"><pre><code class="text">./configure
-make
-sudo make install
-</code></pre>
-</div>
-
-
-<p>I found this <a href="http://quote.ucsd.edu/blogs/rogblog/2008/11/09/installing-rjags-on-64-bit-debian-etch/">post</a> which describes that you should specify <em>'--with-jags-modules' and '--libdir'</em> options at configuration stage if you are on 64-bit architecture, but it seems this is no more needed (All jags libs were placed in '/usr/local/lib' directory, not in 'lib64' as it was the case at the time the post was written).</p>
-
-<p>Next, I tried to install 'rjags' package within R:</p>
-
-<div class="highlight"><pre><code class="text">install.packages(&#39;rjags&#39;)
-</code></pre>
-</div>
-
-
-<p>and I got this error message:</p>
-
-<div class="highlight"><pre><code class="text">...
-*** installing help indices
-** building package indices ...
-Error : .onLoad failed in loadNamespace() for &#39;rjags&#39;, details:
-call: dyn.load(file, DLLpath = DLLpath, ...)
-error: unable to load shared object
-&#39;/usr/local/lib/R/site-library/rjags/libs/rjags.so&#39;:
-libjags.so.3: cannot open shared object file:
-No such file or directory
-ERROR: installing package indices failed *
-removing &#39;/usr/local/lib/R/site-library/rjags&#39;
-...
-</code></pre>
-</div>
-
-
-<p>First, I tried various things with the previous R function (some of which, for instance, were to include 'dependecies=TRUE' and jags module paths as arguments to this function). That didn't work. After quite a few failed trials I found out that jags libraries were in '/usr/local/lib' directory and it was not included in my linker path. I checked this with:</p>
-
-<div class="highlight"><pre><code class="bash">sudo ldconfig -p | grep <span class="nb">local</span>
-</code></pre>
-</div>
-
-
-<p>and since '/usr/local/lib' didn't appear on <em>stdout</em> I added this line in the new '/etc/ld.so.conf.d/jags.conf' file. Than, in order to activate linker paths and check if '/usr/local/lib' was included I run:</p>
-
-<div class="highlight"><pre><code class="bash">sudo ldconfig -v | grep /usr/local/lib
-</code></pre>
-</div>
-
-
-<p>I tried 'rjags' installation again with:</p>
-
-<div class="highlight"><pre><code class="text">sudo R --with-jags-modules=/usr/local/lib/JAGS/modules-3 \
-CMD INSTALL ~/downloads/rjags_3-2.tar.gz
-</code></pre>
-</div>
-
-
-<p>and this time it was installed!</p>
-
-<p>It remains just to develop some Bayesian models for predicting a stock price movements or whatever, and make myself awfully rich ;).</p>
-
-
-
-
-    
-        <p> <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html#disqus_thread" class="comments">View comments</a> </p>
     
 
 

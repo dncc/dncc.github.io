@@ -11,7 +11,7 @@ require 'mime/types'
 CONFIG = YAML::load_file(File.join(File.dirname(__FILE__), '_config.yml'))
 
 # points to our generated website directory
-PUBLIC = File.expand_path(File.join(File.dirname(__FILE__), 
+PUBLIC = File.expand_path(File.join(File.dirname(__FILE__),
                           CONFIG['destination'] || '_site'))
 
 # For cutting down on the boilerplate
@@ -25,7 +25,7 @@ class BaseMiddleware
 end
 
 # Rack middleware for correcting paths:
-#  
+#
 # 1. redirects from the www. version to the naked domain version
 #
 # 2. converts directory/paths/ to directory/paths/index.html (most
@@ -35,12 +35,12 @@ class PathCorrections < BaseMiddleware
   def call(env)
     env['PATH_INFO'] += 'index.html' if env['PATH_INFO'].end_with? '/'
     request = Rack::Request.new(env)
-    
+
     if request.host.start_with?("www.")
       [301, {"Location" => request.url.sub("//www.", "//")}, self]
     else
       @app.call(env)
-    end    
+    end
   end
 end
 
@@ -86,7 +86,7 @@ end
 class Fancy404NotFound < BaseMiddleware
   def call(env)
     status, headers, response = @app.call(env)
-    if status == 404 
+    if status == 404
       ext = File.extname(env['PATH_INFO'])
       if ext =~ /html?$/ or ext == '' or !ext
         headers = {'Content-Type' => 'text/html'}
@@ -104,8 +104,8 @@ end
 # I couldn't work with Rack::File directly, because for some reason
 # Heroku prevents me from overriding the Cache-Control header, setting
 # it to 12 hours. But 12 hours is not suitable for HTML content that
-# may receive fixes and other assets should have an expiry in the far 
-# future, with 12 hours not being enough. 
+# may receive fixes and other assets should have an expiry in the far
+# future, with 12 hours not being enough.
 
 class Application < BaseMiddleware
   class Http404 < Exception; end
@@ -124,26 +124,26 @@ class Application < BaseMiddleware
     # online or bring it back to life in case it sleeps
     if path_info == "/ping"
       return [200, {
-          'Content-Type' => 'text/plain', 
+          'Content-Type' => 'text/plain',
           'Cache-Control' => 'no-cache'
       }, [DateTime.now.to_s]]
     end
- 
-    
+
+
     headers = {}
     if mimetype = guess_mimetype(path_info)
       headers['Content-Type'] = mimetype
       if mimetype == 'text/html'
-        headers['Content-Language'] = 'en' 
+        headers['Content-Language'] = 'en'
         headers['Content-Type'] += "; charset=utf-8"
       end
     end
-    
+
     begin
       # basic validation of the path provided
       raise Http404 if path_info.include? '..'
       abs_path = File.join(PUBLIC, path_info[1..-1])
-       
+
       raise Http404 unless File.exists? abs_path
       # setting Cache-Control expiry headers
       type = path_info =~ /\.html?$/ ? 'html' : 'assets'
@@ -161,7 +161,7 @@ end
 
 
 #
-# the actual Rack configuration, using 
+# the actual Rack configuration, using
 # the middleware defined above
 #
 
