@@ -57,7 +57,7 @@ process. If rule is changed, added or removed all rules are processed
 again.
 
 So I added */etc/polkit-1/rules.d/10-udisks-automount.rules* file with
-following rule:
+the following rule:
 
 {% highlight javascript %}
 
