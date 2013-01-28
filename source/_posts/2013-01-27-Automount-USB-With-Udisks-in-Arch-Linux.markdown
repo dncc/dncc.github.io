@@ -76,7 +76,7 @@ about *polkit* authorization policies can be found in */usr/share/polkit-1/actio
 directory. Particularly, the policy for the *udisks* is placed in
 *org.freedesktop.udisks.policy* file. All rules are written in JavaScript.
 
-After this rule was added, *devmon* and *udiskie* started to work as expected
+After I'd added this rule, *devmon* and *udiskie* started to work as expected
 so I haven't searched further. For that reason I suppose that what I've presented
 here is probably quick and dirty solution. It should serve just as a remainder
 to me in the future and it might also help someone with the similar problem.

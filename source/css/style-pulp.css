@@ -88,7 +88,7 @@ blockquote {
     padding-left: 17px;
 }
 
-.header a:hover { 
+.header a:hover {
     text-decoration: none;
 }
 
@@ -139,9 +139,9 @@ blockquote {
 
 /* Post title as link */
 
-.content h1 a { 
-    color: #322b21; 
-    background-color: #fff; 
+.content h1 a {
+    color: #322b21;
+    background-color: #fff;
 }
 
 .content h1 a:hover { text-decoration: none }
