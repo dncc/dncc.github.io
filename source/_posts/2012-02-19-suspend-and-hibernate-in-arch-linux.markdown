@@ -2,7 +2,7 @@
 layout: post
 title: Suspend and Hibernate in Arch Linux
 tags:
-- Linux
+- Arch, Suspend, Hibernate
 status: publish
 type: post
 published: true

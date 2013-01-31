@@ -2,7 +2,7 @@
 layout: post
 title:  Automount With Udisks in Arch Linux
 tags:
-- Udisks, USB, Automount
+- Arch, Udisks, USB, Automount
 status: publish
 type: post
 published: true
