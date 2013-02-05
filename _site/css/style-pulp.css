@@ -290,6 +290,14 @@ blockquote {
     padding-left: 20px;
 }
 
+img.about {
+  float: left;
+}
+
+div.about {
+  margin-top: 10px;
+}
+
 .archives table .postdate {
     color: #aaa;
     text-align: right;
