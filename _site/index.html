@@ -59,13 +59,13 @@ gem install <span class="sb">`</span>cat gems-versions<span class="sb">`</span>
 </div>
 
 
-<p>First, I switched to ruby-2.0.0-rc1 with 'chruby' in order to make list of available
-gems. Then, I piped list of gems to the awk in order to parse it. Here is what it does:</p>
+<p>First, I switched to ruby-2.0.0-rc1 with 'chruby' in order to make a list of available
+gems. Then, I piped list of gems to the awk command in order to parse it. Here is what it does:</p>
 
 <ul>
 <li>Remove parenthesis that enclose gem versions in each line with <em>gsub(/(|)\/, "")</em>.</li>
 <li>Concatenate gem version with its name in a single line in the form that the
- gem install command understands (i.e -v=<gem-version> <gem-name>) with
+ <em>gem install</em> command understands (i.e -v=<gem-version> <gem-name>) with
  <em>line=line " -v=" $NF " " $1 ;</em>. We take last field (gem version number)
  with <em>$NF</em> and than name of the gem with <em>$1</em> and concatenate that to line
  variable.</li>
