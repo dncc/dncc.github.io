@@ -39,8 +39,8 @@
     published: 28 Apr 2013
 </div>
 
-<p>I installed latest Ruby (2.0.0-p0) and along with it I wanted to install the last
-gem versions from the previous Ruby (2.0.0-rc1). Here is awk one-liner that helped
+<p>I installed today latest Ruby (2.0.0-p0) and along with it the smallest gem
+versions from the previous Ruby (2.0.0-rc1). Here is awk one-liner that helped
 me do that.</p>
 
 <div class="highlight"><pre><code class="bash">chruby 2.0.0-rc1
@@ -70,6 +70,36 @@ gems. Then, I piped list of gems to the awk command in order to parse it. Here i
 
 
 <p>After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with:       <em>gem install `cat gems-versions`</em>.</p>
+
+<p>Variations of this are easy. In case that, for instance, we need to install all gem
+versions that are already present in the previous Ruby version then awk command
+should look probably something like this:</p>
+
+<div class="highlight"><pre><code class="bash">chruby ruby-2.0.0-p0
+
+gem list | <span class="se">\</span>
+    awk <span class="s1">&#39;{ gsub(/\)/,&quot;&quot;); gsub(/\(|,\s/, &quot; &quot; $1&quot;:&quot;); \</span>
+<span class="s1">    $1=&quot;&quot;; line = line &quot; &quot; $0} END { print line }&#39;</span> &gt; gems-versions
+
+chruby ruby-2.0.0-p0
+gem install <span class="sb">`</span>cat gems-versions<span class="sb">`</span>
+</code></pre>
+</div>
+
+
+<p>Everything stays the same as in the previous case except we have few additional
+awk commands to type:</p>
+
+<ul>
+<li>With <em>gsub(/)/,""); gsub(/(|,\s/, " " $1":")</em> we are replacing string
+<em>"gem_x (1.0, 2.0)"</em> with "gem_x gem_x:1.0 gem_x:2.0"</li>
+<li>Then we are setting the first field (a gem name) to the empty string with
+<em>$1=""</em> so we are left with <em>"gem_x:1.0 gem_x:2.0"</em> which should be valid
+input for the <em>gem install</em> command.</li>
+<li>And last, we concatenate the remaining string <em>$0</em> to the <em>line</em> variable
+which will be saved to the <em>gems-versions</em> file.</li>
+</ul>
+
 
 
 
