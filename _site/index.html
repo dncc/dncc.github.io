@@ -65,7 +65,7 @@ gems. Then, I piped list of gems to the awk command in order to parse it. Here i
 <ul>
 <li>Remove parenthesis that enclose gem versions in each line with <em>gsub(/\(|\)/, "")</em>.</li>
 <li>Concatenate gem version with its name in a single line in the form that the
- <em>gem install</em> command understands (i.e -v=<gem-version> <gem-name>) with
+ <em>gem install</em> command understands (i.e -v=&lt;gem-version> &lt;gem-name>) with
  <em>line=line " -v=" $NF " " $1 ;</em>. We take last field (gem version number)
  with <em>$NF</em> and than name of the gem with <em>$1</em> and concatenate that to line
  variable.</li>
