@@ -7,7 +7,7 @@ status: publish
 type: post
 published: true
 ---
-I installed today latest Ruby (2.0.0-p0) and along with it the smallest gem
+I installed latest Ruby (2.0.0-p0) today and along with it the smallest gem
 versions from the previous Ruby (2.0.0-rc1). Here is awk one-liner that helped
 me do that.
 
