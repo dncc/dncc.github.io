@@ -28,8 +28,8 @@ The book offers Ruby solution for the memoization of the Proc and Method objects
 
 {% highlight ruby %}
 module Functional
-  def memoize
-    cache = {}
+  def memoize
+    cache = {}
     lambda { |*args|
       unless cache.has_key?(args)
         cache[args] = self[*args]

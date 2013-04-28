@@ -12,7 +12,7 @@
         
     </title>
     <link rel="stylesheet" href="/css/style-pulp.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="/css/syntax.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/railscasts.css" media="screen" type="text/css"/>
 </head>
 
 <body>
@@ -126,8 +126,8 @@ so final repository should look like this:</p>
 
 <p>And for the end, here is the script that is very handy for reviewing branches and project history:</p>
 
-<div class="highlight"><pre><code class="text">git log &lt;B-sha1&gt;^..HEAD --graph --decorate --pretty=oneline --abbrev-commit develop
-code-review some-other-branch
+<div class="highlight"><pre><code class="text">git log &lt;B-sha1&gt;^..HEAD --graph --decorate --pretty=oneline \
+    --abbrev-commit develop code-review some-other-branch
 </code></pre>
 </div>
 

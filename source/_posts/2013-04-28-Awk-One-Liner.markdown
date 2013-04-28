@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Install Last Gem Versions With Awk
+title: Parse Gem Versions With Awk
 tags:
 - Unix Awk
 status: publish

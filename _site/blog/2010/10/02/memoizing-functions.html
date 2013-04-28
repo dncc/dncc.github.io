@@ -12,7 +12,7 @@
         
     </title>
     <link rel="stylesheet" href="/css/style-pulp.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="/css/syntax.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/railscasts.css" media="screen" type="text/css"/>
 </head>
 
 <body>
@@ -53,8 +53,8 @@ is somewhat expensive, then memoization may be a useful optimization...</p></blo
 <p>The book offers Ruby solution for the memoization of the Proc and Method objects:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="k">module</span> <span class="nn">Functional</span>
-<span class="err"> </span> <span class="k">def</span> <span class="nf">memoize</span>
-<span class="err">   </span> <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="k">def</span> <span class="nf">memoize</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="err">   </span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|*</span><span class="n">args</span><span class="o">|</span>
 <span class="err"> </span> <span class="err">   </span> <span class="k">unless</span> <span class="n">cache</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 <span class="err">       </span> <span class="n">cache</span><span class="o">[</span><span class="n">args</span><span class="o">]</span> <span class="o">=</span> <span class="nb">self</span><span class="o">[*</span><span class="n">args</span><span class="o">]</span>

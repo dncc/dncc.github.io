@@ -112,8 +112,8 @@ And for the end, here is the script that is very handy for reviewing branches an
 
 {% highlight text %}
 
-git log <B-sha1>^..HEAD --graph --decorate --pretty=oneline --abbrev-commit develop
-code-review some-other-branch
+git log <B-sha1>^..HEAD --graph --decorate --pretty=oneline \
+    --abbrev-commit develop code-review some-other-branch
 
 {% endhighlight %}
 
