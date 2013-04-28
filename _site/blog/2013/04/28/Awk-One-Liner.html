@@ -60,7 +60,7 @@ gem install <span class="sb">`</span>cat gems-versions<span class="sb">`</span>
 gems. Then, I piped list of gems to the awk command in order to parse it. Here is what it does:</p>
 
 <ul>
-<li>Remove parenthesis that enclose gem versions in each line with <em>gsub(/(|)\/, "")</em>.</li>
+<li>Remove parenthesis that enclose gem versions in each line with <em>gsub(/\(|\)/, "")</em>.</li>
 <li>Concatenate gem version with its name in a single line in the form that the
  <em>gem install</em> command understands (i.e -v=<gem-version> <gem-name>) with
  <em>line=line " -v=" $NF " " $1 ;</em>. We take last field (gem version number)
@@ -70,7 +70,7 @@ gems. Then, I piped list of gems to the awk command in order to parse it. Here i
 </ul>
 
 
-<p>After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with <em>gem install <code>cat gems-versions</code></em>.</p>
+<p>After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with:       <em>gem install `cat gems-versions`</em>.</p>
 
 
 

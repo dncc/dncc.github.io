@@ -27,7 +27,7 @@ gem install `cat gems-versions`
 First, I switched to ruby-2.0.0-rc1 with 'chruby' in order to make a list of available
 gems. Then, I piped list of gems to the awk command in order to parse it. Here is what it does:
 
-* Remove parenthesis that enclose gem versions in each line with _gsub(/\(|)\/, "")_.
+* Remove parenthesis that enclose gem versions in each line with _gsub(/\\(|\\)/, "")_.
 * Concatenate gem version with its name in a single line in the form that the
    _gem install_ command understands (i.e -v=<gem-version> <gem-name>) with
    _line=line " -v=" $NF " " $1 ;_. We take last field (gem version number)
@@ -35,4 +35,4 @@ gems. Then, I piped list of gems to the awk command in order to parse it. Here i
    variable.
 * Print the concatenated line in the 'gems-versions' file at the end.
 
-After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with _gem install `cat gems-versions`_.
+After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with:       _gem install \`cat gems-versions\`_.
