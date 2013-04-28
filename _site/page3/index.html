@@ -37,6 +37,100 @@
     
 
     
+<h1> <a href="/blog/2012/02/19/suspend-and-hibernate-in-arch-linux.html"> Suspend and Hibernate in Arch Linux </a> </h1>
+
+<div class="date">
+    published: 19 Feb 2012
+</div>
+
+<p>In order to suspend your session in Arch Linux (to RAM or disk) you should try to follow the steps from bellow:</p>
+
+<p>First install pm-utils tools with the pacman. No surprises here, just type:</p>
+
+<div class="highlight"><pre><code class="text">sudo pacman -S pm-utils
+</code></pre>
+</div>
+
+
+<p>and heavy lifting will be done with the awesome pacman program. In the case that 'vbetool' and 'acpi' packages are not installed, you will need to install them too with similar incantations.</p>
+
+<p>Suspend to RAM should be enabled imidiatelly. You can check that with the following command:</p>
+
+<div class="highlight"><pre><code class="text">sudo pm-suspend
+</code></pre>
+</div>
+
+
+<p>After this, current session should be saved to RAM and machine put on standby mode.</p>
+
+<p>Hibernation (suspend to disk) needs additional configuration. Receipt that worked for me is listed bellow:</p>
+
+<p>Add to GRUB's config file 'resume' option ('resume=/path/to/swap/drive') by editing the kernel line in the next paragraph:</p>
+
+<div class="highlight"><pre><code class="text">title Arch Linux
+root (hd0,2)
+kernel /vmlinuz-linux root=/dev/sda4 ro
+initrd /initramfs-linux.img
+</code></pre>
+</div>
+
+
+<p>as follows:</p>
+
+<div class="highlight"><pre><code class="text">kernel /vmlinuz-linux root=/dev/sda4 resume=/dev/sda5 ro
+</code></pre>
+</div>
+
+
+<p><em>Note:
+GRUB config file on my machine is '/boot/grub/menu.lst', but if you have GRUB2 it should be '/boot/grub/grub.cfg', also the configuration is somewhat different, look for details <a href="https://wiki.archlinux.org/index.php/Pm-utils#Hibernation_.28suspend2disk.29">here</a> .
+The swap partition on my machine is '/dev/sda5', of course you should change this with the path of your swap partition.</em></p>
+
+<p>Additionally, resume hook should be added to 'etc/mkinitcpio.conf' as follows:</p>
+
+<div class="highlight"><pre><code class="text">HOOKS=&quot;base udev autodetect ide scsi sata lvm2 resume filesystems&quot;
+</code></pre>
+</div>
+
+
+<p>Ordering matters here, so it is important to place resume after ide, scsi, sata and lvm2 and before filesystems. After this, recreate ramdisk environment with:</p>
+
+<div class="highlight"><pre><code class="text">mkinitcpio -p linux
+</code></pre>
+</div>
+
+
+<p>If everything went well set user permissions for pm-utils in '/etc/sudoers' config file as follows:</p>
+
+<div class="highlight"><pre><code class="text">username,hostname=NOPASSWD:/usr/sbin/pm-hibernate, /usr/sbin/pm-suspend
+</code></pre>
+</div>
+
+
+<p>where username and hostname placeholders shoud be actual values. This way you authorize your user to execute pm-hibernate and pm-suspend w/o need to login as superuser each time.</p>
+
+<p>Add aliases to config file of your preferd shell and you are good to go:</p>
+
+<div class="highlight"><pre><code class="text">alias hibernate=&quot;sudo pm-hibernate&quot;
+alias suspend=&quot;sudo pm-suspend&quot;
+</code></pre>
+</div>
+
+
+<p>Happy hacking!</p>
+
+
+
+
+    
+        <p> <a href="/blog/2012/02/19/suspend-and-hibernate-in-arch-linux.html#disqus_thread" class="comments">View comments</a> </p>
+    
+
+
+
+    
+
+    
 <h1> <a href="/blog/2011/11/12/ruby-quine-blog.html"> Ruby quine (we all came from Turing machine) </a> </h1>
 
 <div class="date">
@@ -84,12 +178,12 @@ Being inspired by pure elegance and mastery of <a href="http://norvig.com/sudoku
 <span class="no">UNITSARR</span> <span class="o">=</span> <span class="no">COLS</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">cross</span><span class="p">(</span><span class="no">ROWS</span><span class="p">,</span> <span class="o">[</span><span class="n">c</span><span class="o">]</span><span class="p">)</span> <span class="p">}</span> <span class="o">+</span>
            <span class="no">ROWS</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span> <span class="n">cross</span><span class="p">(</span><span class="o">[</span><span class="n">r</span><span class="o">]</span><span class="p">,</span> <span class="no">COLS</span><span class="p">)</span> <span class="p">}</span> <span class="o">+</span>
            <span class="o">[</span><span class="s1">&#39;A&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;G&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;I&#39;</span><span class="o">].</span><span class="n">inject</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">arr</span><span class="p">,</span><span class="n">rs</span><span class="o">|</span>
-              <span class="o">[</span><span class="s1">&#39;1&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;6&#39;</span><span class="p">,</span><span class="s1">&#39;7&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;9&#39;</span><span class="o">].</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">cs</span><span class="o">|</span> 
-                    <span class="n">arr</span> <span class="o">&lt;&lt;</span> <span class="n">cross</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span> <span class="n">cs</span><span class="p">)</span> 
-                 <span class="k">end</span>              
+              <span class="o">[</span><span class="s1">&#39;1&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;6&#39;</span><span class="p">,</span><span class="s1">&#39;7&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;9&#39;</span><span class="o">].</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">cs</span><span class="o">|</span>
+                    <span class="n">arr</span> <span class="o">&lt;&lt;</span> <span class="n">cross</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span> <span class="n">cs</span><span class="p">)</span>
+                 <span class="k">end</span>
               <span class="n">arr</span>
            <span class="k">end</span>
-<span class="no">UNITS</span> <span class="o">=</span> <span class="no">SQUARES</span><span class="o">.</span><span class="n">inject</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">s</span><span class="o">|</span> 
+<span class="no">UNITS</span> <span class="o">=</span> <span class="no">SQUARES</span><span class="o">.</span><span class="n">inject</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">s</span><span class="o">|</span>
            <span class="n">h</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">=</span> <span class="no">UNITSARR</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">u</span><span class="o">|</span> <span class="n">u</span><span class="o">.</span><span class="n">include?</span> <span class="n">s</span><span class="p">}</span><span class="o">.</span><span class="n">flatten</span><span class="p">;</span> <span class="n">h</span>
         <span class="k">end</span>
 <span class="no">PEERS</span> <span class="o">=</span> <span class="no">SQUARES</span><span class="o">.</span><span class="n">inject</span><span class="p">({}){</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">s</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">=</span> <span class="no">UNITS</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">-</span> <span class="o">[</span><span class="n">s</span><span class="o">]</span><span class="p">;</span> <span class="n">h</span><span class="p">}</span>
@@ -158,8 +252,8 @@ Search for solution:
    <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="n">values</span>
    <span class="k">return</span> <span class="n">values</span> <span class="k">unless</span> <span class="n">values</span><span class="o">.</span><span class="n">any?</span><span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span> <span class="p">}</span>
    <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">find</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
-      <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">values</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> 
-         <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span> 
+      <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">values</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
+         <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span>
       <span class="p">}</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="p">}</span><span class="o">.</span><span class="n">min</span>
    <span class="k">end</span>
    <span class="k">return</span> <span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
@@ -194,47 +288,6 @@ And display it:
 
     
         <p> <a href="/blog/2011/09/18/sudoku-solver-in-ruby.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
-
-    
-
-    
-<h1> <a href="/blog/2011/09/17/sed-tip.html"> Editing with sed </a> </h1>
-
-<div class="date">
-    published: 17 Sep 2011
-</div>
-
-<p>I had to deal with some broken csv files today. The Windows's end of line characters ('<sup>M')</sup> were all over the place and some csv rows were broken up into several text lines. They looked something like the following text (one csv row is broken into two text lines with each line ending with '<sup>M'):</sup></p>
-
-<div class="highlight"><pre><code class="bash">29.12.2005;1450,00;5,07;6.036;1399.00;1399.00^M
-;1450.00;-;-;KT^M
-28.12.2005;1380,00;-1,43;4.000;1380.00;1380.00^M
-;1380.00;-;-;KT^M
-27.12.2005;1400,00;-0,64;166;1384.00;1384.00^M
-;1400.00;-;-;KT^M
-</code></pre>
-</div>
-
-
-<p>So, here is the sed solution I came up with after quite a struggle.</p>
-
-<div class="highlight"><pre><code class="bash">sed  -e :a -e <span class="s1">&#39;s/^M//;&#39;</span> -e <span class="s1">&#39;/[0-9]$/N; s/\n//; ta&#39;</span> <span class="se">\</span>
-input_file.csv &gt; output_file.csv
-</code></pre>
-</div>
-
-
-<p>Here is what it does:
-The first expression ':a' creates a named label "a". The second expression substitutes occurrences of '<sup>M'</sup> with an empty string. The third expression looks to see if the current line ends with a digit. If it does, it joins it with the line following it using the "N" command. Then the newline between joined lines is erased with "s/\n//" command. If the substitution was successful further execution is branched to the beginning of expression and do the same again, in case that we might have another digit at the end. If the substitution was not successful, the line did not end with a digit and we print it out.</p>
-
-
-
-
-    
-        <p> <a href="/blog/2011/09/17/sed-tip.html#disqus_thread" class="comments">View comments</a> </p>
     
 
 
