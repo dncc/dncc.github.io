@@ -56,24 +56,25 @@ gem install <span class="sb">`</span>cat gems-versions<span class="sb">`</span>
 
 
 <p>First, I switched to ruby-2.0.0-rc1 with 'chruby' in order to make a list of available
-gems. Then, I piped list of gems to the awk command in order to parse it. Here is what it does:</p>
+gems. Then, in order to parse the list of gems I piped it to the awk command. Here is
+what it does:</p>
 
 <ul>
-<li>Remove parenthesis that enclose gem versions in each line with <em>gsub(/\(|\)/, "")</em>.</li>
-<li>Concatenate gem version with its name in a single line in the form that the
- <em>gem install</em> command understands (i.e -v=&lt;gem-version> &lt;gem-name>) with
- <em>line=line " -v="$NF" " $1</em>. We take last field (gem version number)
- with <em>$NF</em> and than name of the gem with <em>$1</em> and concatenate that to line
+<li>Removes parenthesis that enclose gem versions in each line with <strong>gsub(/\(|\)/, "")</strong>.</li>
+<li>Concatenates gem version with its name in a single line in the form that the
+ <strong>gem install</strong> command understands (i.e -v=&lt;gem-version> &lt;gem-name>) with
+ <strong>line=line " -v="$NF" " $1</strong>. We take last field (gem version number)
+ with <strong>$NF</strong> and than name of the gem with <strong>$1</strong> and concatenate that to line
  variable.</li>
-<li>Print the concatenated line in the 'gems-versions' file at the end.</li>
+<li>Prints the concatenated line in the <strong>'gems-versions'</strong> file at the end.</li>
 </ul>
 
 
-<p>After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with:       <em>gem install `cat gems-versions`</em>.</p>
+<p>After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with:       <strong>gem install `cat gems-versions`</strong>.</p>
 
-<p>Variations of this are easy. In case that, for instance, we need to install all gem
-versions that are already present in the previous Ruby version then awk command
-should look probably something like this:</p>
+<p>It is easy to adjust this to the similar use cases. If we need, for instance,
+to install all gem versions that are already present in the previous Ruby
+version the awk command should look something like this:</p>
 
 <div class="highlight"><pre><code class="bash">chruby ruby-2.0.0-p0
 
@@ -87,17 +88,17 @@ gem install <span class="sb">`</span>cat gems-versions<span class="sb">`</span>
 </div>
 
 
-<p>Everything stays the same as in the previous case except we have few additional
-awk commands to type:</p>
+<p>Everything is almost the same as in the previous case except there are
+a couple of extra awk commands to add.</p>
 
 <ul>
-<li>With <em>gsub(/)/,""); gsub(/(|,\s/, " " $1":")</em> we are replacing string
-<em>"gem_x (1.0, 2.0)"</em> with "gem_x gem_x:1.0 gem_x:2.0"</li>
-<li>Then we are setting the first field (a gem name) to the empty string with
-<em>$1=""</em> so we are left with <em>"gem_x:1.0 gem_x:2.0"</em> which should be valid
-input for the <em>gem install</em> command.</li>
-<li>And last, we concatenate the remaining string <em>$0</em> to the <em>line</em> variable
-which will be saved to the <em>gems-versions</em> file.</li>
+<li><strong>gsub(/)/,""); gsub(/(|,\s/, " " $1":")</strong> replaces string
+<strong>xgem (2.0, 1.0)</strong> with <strong>xgem xgem:2.0 xgem:1.0</strong></li>
+<li><strong>$1=""</strong> sets the first field (a gem name) to the empty string so the
+output string becomes <strong>gem_x:1.0 gem_x:2.0</strong> which should be valid
+input for the <strong>gem install</strong> command.</li>
+<li><strong>line = line " " $0</strong> concatenates the output string <strong>$0</strong> to the <strong>line</strong>
+variable which will be saved to the <strong>gems-versions</strong> file.</li>
 </ul>
 
 
