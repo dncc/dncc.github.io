@@ -28,19 +28,19 @@ First, I switched to ruby-2.0.0-rc1 with 'chruby' in order to make a list of ava
 gems. Then, in order to parse the list of gems I piped it to the awk command. Here is
 what it does:
 
-* Removes parenthesis that enclose gem versions in each line with __gsub(/\\(|\\)/, "")__.
+* Removes parenthesis that enclose gem versions in each line with _gsub(/\\(|\\)/, "")_.
 * Concatenates gem version with its name in a single line in the form that the
-   __gem install__ command understands (i.e -v=\<gem-version\> \<gem-name\>) with
-   __line=line " -v="$NF" " $1__. We take last field (gem version number)
-   with __$NF__ and than name of the gem with __$1__ and concatenate that to line
-   variable.
-* Prints the concatenated line in the __'gems-versions'__ file at the end.
+   _gem install_ command understands (i.e -v=\<gem-version\> \<gem-name\>) with
+   _line=line " -v="$NF" " $1_. _$NF_ and _$1_ denote the gem's version number
+   and name respectively.
+* Prints the concatenated line in the _'gems-versions'_ file at the end.
 
-After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with:       __gem install \`cat gems-versions\`__.
+After I created the list of gems I switched to ruby-2.0.0-p0 and installed gems with:
+_gem install \`cat gems-versions\`_.
 
-It is easy to adjust this to the similar use cases. If we need, for instance,
+It is easy to adjust this to the similar use cases. If we want, for instance,
 to install all gem versions that are already present in the previous Ruby
-version the awk command should look something like this:
+version the awk that will parse all gem versions will look something like this:
 
 {% highlight bash %}
 
@@ -58,12 +58,10 @@ gem install `cat gems-versions`
 Everything is almost the same as in the previous case except there are
 a couple of extra awk commands to add.
 
-* __gsub(/\)/,""); gsub(/\(|,\s/, " " $1":")__ replaces string
-  __xgem (2.0, 1.0)__ with __xgem xgem:2.0 xgem:1.0__
-* __$1=""__ sets the first field (a gem name) to the empty string so the
-  output string becomes __gem_x:1.0 gem_x:2.0__ which should be valid
-  input for the __gem install__ command.
-* __line = line " " $0__ concatenates the output string __$0__ to the __line__
-  variable which will be saved to the __gems-versions__ file.
-
-
+* _gsub(/\)/,""); gsub(/\(|,\s/, " " $1":")_ replaces string
+  _xgem (2.0, 1.0)_ with _xgem xgem:2.0 xgem:1.0_
+* _$1=""_ sets the first field (a gem name) to the empty string so the
+  output string becomes _gem_x:1.0 gem_x:2.0_ which should be valid
+  input for the _gem install_ command.
+* _line = line " " $0_ concatenates the output string _$0_ to the _line_
+  variable which will be saved to the _gems-versions_ file.
