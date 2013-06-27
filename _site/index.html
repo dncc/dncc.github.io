@@ -36,6 +36,147 @@
     
 
     
+<h1> <a href="/blog/2013/06/26/Discrete-Compound-Interest-PV-FV-Derivation.html"> Derivation of Annuity Formulas (Discrete Compound Interest) </a> </h1>
+
+<div class="date">
+    published: 26 Jun 2013
+</div>
+
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+
+<script src="/js/MathJax/MathJax.js?config=TeX-AMS_HTML-full"> </script>
+<p>
+I've found today an elegant and intuitive approach to derive equations of present and
+future values for $n$ annuity payments ($pv_{n}, fv_{n}$). It doesn't require much algebraic
+manipulation and its quite easy to visualize. I'm going to write it down so I have reference.
+</p>
+
+<p>
+This is also opportunity for me to try <a href="http://www.mathjax.org/">MatJax.js</a>, JavaScript library for writing LaTeX formulas in HTML :).
+</p>
+
+<p>
+Let's just imagine two infinitely long time lines of payments. At first timeline
+payments start at point 1 and at the second timeline they start at time n+1.
+Here is what they might look like:
+</p>
+
+<div class="highlight"><pre><code class="bash">    -------| Payment Timeline1 |-------&gt;
+
+            pmt<span class="o">(</span>1<span class="o">)</span>    pmt<span class="o">(</span>2<span class="o">)</span>     pmt<span class="o">(</span>N<span class="o">)</span>    pmt<span class="o">(</span>n+1<span class="o">)</span>   pmt<span class="o">(</span>n+2<span class="o">)</span>  pmt<span class="o">(</span>Inf<span class="o">)</span>
+    |---------|---------|----------|----------|----------|---------|
+    0         1         2    ...   n         n+1        n+2  ...  Inf
+
+
+    -------| Payment Timeline2 |------&gt;
+                                           pmt<span class="o">(</span>1<span class="o">)</span>     pmt<span class="o">(</span>2<span class="o">)</span>    pmt<span class="o">(</span>Inf<span class="o">)</span>
+    |---------|---------|----------|----------|----------|---------|
+    0         1         2    ...   n         n+1        n+2  ...  Inf
+</code></pre>
+</div>
+
+
+<p>
+Where pmt(1), pmt(2), ... etc. are obviously payments at time 1, 2, ... etc,
+and we assume that all payments are equal to each other (i.e. pmt(1) = pmt(2) = ... = pmt(Inf) = pmt).
+</p>
+<p>
+Once we are finished, it will be enough to keep this image in our mind in order
+to derive the $pv_{n}$ and $fv_{n}$ formulas. No need to remember long sequences of algebraic
+calculations any more. Just two infinite time axis with different starting points (it can't be
+much easier than that :)). Enough talk, let's make use of our pretty image now.
+</p>
+
+<p>
+The simple fact of finance says that in order to obtain present values we have to discount them
+with interest rate $r$. So the present values on Timeline1 at point in time 0 ($PIT_{0}$) for
+payments pmt(1), pmt(2), ..., pmt(n), ..., pmt($\infty$). will be equal to:
+
+\begin{equation}
+pv_{1} = \frac{pmt}{(1+r)}, pv_{2} = \frac{pmt}{(1+r)^2},
+..., pv_{n} = \frac{pmt}{(1+r)^n}, ..., pv_{\infty} = \frac{pmt}{(1+r)^{\infty}}
+\end{equation}
+
+respectively. So the sum of all present value payments on Timeline1 will be:
+
+$$ pv_{Timeline1} = \Sigma_{i=1}^{\infty} pv(i) = \Sigma_{i=1}^{\infty}
+\frac{pmt}{(1+r)^i} = pmt * \Sigma_{i=1}^{\infty} \frac{1}{(1+r)^i}.$$
+
+Now, note that the present values at $PIT_{n}$ on Timeline2 are equal exactly
+to the present values on Timeline1 at $PIT_{0}$. So in order to obtain present
+values at $PIT_{0}$ on Timeline2 we need to additionally discount all present
+values at $PIT_{n}$ on this timeline with $\frac{1}{(1+r)^n}$ discount factor.
+If we do this the sum of all present value payments on Timeline2 will be:
+
+$$ pv_{Timeline2} = pv_{Timeline1} * \frac{1}{(1+r)^n}. $$
+
+Now we have formulas with lots of summation terms (for infinite number of future
+payments), so we need something simpler, shorter and more handy in order to calculate
+$pv_{n}$ and $fv_{n}$ values of $n$ future payments. In order to get there we need to
+know just one small mathematical truth about, so called, geometric progressions.
+Let's see what they are.
+</p>
+
+<blockquote><p>
+ Geometric progression of A (where A is constant less than 1) can be defined as
+ follows: $$ S = \Sigma_{i=1}^{\infty} A^i $$
+
+ It is easy to see that $$S = \frac{A}{1-A},$$ we just multiply $S$ with $A$
+ so that $A*S = \Sigma_{i=1}^{\infty} A^{i+1}$ and when substract $S*A$ from $S$
+ we get $S - S*A = A$, and indeed $S = \frac{A}{1-A}$.
+</p></blockquote>
+
+
+<p>
+If we apply this cute trick to the sumation term of $pv_{Timeline1}$ equation we can
+simplify it significantly:
+
+$$
+ pv_{Timeline1} = pmt * \Sigma_{i=1}^{\infty} \frac{1}{(1+r)^i} = pmt * \frac{\frac{1}{(1+r)^i}}{1 - \frac{1}{(1+r)^i}}  = \frac{pmt}{r}.
+$$
+
+So $pv_{Timeline2}$ becomes:
+
+$$
+ pv_{Timeline2} = \frac{pmt}{r} * \frac{1}{(1+r)^n}.
+$$
+
+Now, if we substract $pv_{Timeline2}$ from $pv_{Timeline1}$ we will get simple
+formula for the present value of the first $n$ payments:
+
+$$
+ pv_{n} = pv_{Timeline1} - pv_{Timeline2} = \frac{pmt}{r} - \frac{pmt}{r}*\frac{1}{(1+r)^n} \\
+        = pmt * \left(\frac{1}{r} - \frac{1}{r*(1+r)^n} \right).
+$$
+
+Voila! There it is, our first formula. The second equation (for future value of $n$ annuities - $fv_{n}$) can be obtained
+from the first ($pv_{n}$) even more easily. It is just present value of $n$ annuities compounded to $n$ periods. So:
+
+$$
+ fv_{n} = pv_{n} * (1+r)^n = pmt * \left(\frac{1}{r} - \frac{1}{r*(1+r)^n} \right) * (1+r)^n \\
+        = pmt * \left( \frac{(1+r)^n}{r} - \frac{1}{r} \right).
+$$
+
+The original source for this derivation can be found <a href="http://www.cengage.com/resource_uploads/downloads/0324594690_163058.pdf">here</a>. That's all folks! :)
+</p>
+
+
+
+
+    
+        <p> <a href="/blog/2013/06/26/Discrete-Compound-Interest-PV-FV-Derivation.html#disqus_thread" class="comments">View comments</a> </p>
+    
+
+
+
+    
+
+    
 <h1> <a href="/blog/2013/04/28/Awk-One-Liner.html"> Parsing Gem Versions With Awk </a> </h1>
 
 <div class="date">
@@ -202,118 +343,6 @@ and with <em>man polkit(8)</em>.</p>
 
     
         <p> <a href="/blog/2013/01/27/Automount-USB-With-Udisks-in-Arch-Linux.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
-
-    
-
-    
-<h1> <a href="/blog/2012/09/08/Browse-and-change-code-with-Git.html"> Browse and change code history with Git </a> </h1>
-
-<div class="date">
-    published: 08 Sep 2012
-</div>
-
-<p>Sometimes, if I really want to understand a peace of software, I embark on browsing its whole history available in Git. I usually checkout its initial commit and than slowly make my way through the forest of subsequent commits and branches. If the project is the important one and has live and vibrant community I also consult mailing list archives for the point of time when a particular commit is made. This way, not only that I learn what were the original driving ideas of the current design, but often I gain deep insights about evolution and dynamics of the project .</p>
-
-<p>I'll write now about some Git commands from its time-traveling-and-history-changing toolbox that I use in this setting.</p>
-
-<p>Let's assume the following history exists and the current branch is "develop":</p>
-
-<div class="highlight"><pre><code class="text">               A---B---C---D---E---X develop
-</code></pre>
-</div>
-
-
-<p>Now let's say that I'm on commit B where some particularly complicated algorithm is introduced. As I have hard time understanding the algorithm I write lots of printf's, comments and proof-of-concept code all over the place. Also, I often try to do the same thing that is done in the code differently and sometimes (especially when I make a mistake) I see why the author had chosen the particular way of doing it.</p>
-
-<p>This meta-code helps me to really understand the original source and forces me to learn and adopt good practices and ideas from it. It has a tremendous value for me because if I need to check the algorithm at the point B again I will, hopefully, understand it and know how to reuse it much more quickly with this meta-code explanations. As I want to preserve this for the future I create commits along the way and usually group them in separate 'code-review' branch.</p>
-
-<div class="highlight"><pre><code class="text">git checkout -b code-review &lt;B-sha1&gt;
-</code></pre>
-</div>
-
-
-<p>Next, I write explanatory comments, log messages and tests for commit B in commits F, G, H on the code-review branch so my git repository looks something like this</p>
-
-<div class="highlight"><pre><code class="text">                     F---G---H code-review
-                    /
-               A---B---C---D---E---X develop
-</code></pre>
-</div>
-
-
-<p>When I'm done with reviewing commit B I move further down the main developing line to commits C, D, and E. Let's say the code there consists just of smaller tweaks of the algorithm that is introduced at the point B. I understand everything without need to write additional meta-code and I want to integrate them in my code-review branch so I can move on to another commits down the develop branch.</p>
-
-<p>The easiest way to integrate C, D and E with <em>all</em> previous code-review commits (F, G, H) is to use git <em>rebase</em> command (at this point I would be in 'code-review' branch):</p>
-
-<div class="highlight"><pre><code class="text">git rebase &lt;E-sha1&gt;
-</code></pre>
-</div>
-
-
-<p>So I end up with the following repository:</p>
-
-<div class="highlight"><pre><code class="text">                                 F---G---H code-review
-                                /
-               A---B---C---D---E---X develop
-</code></pre>
-</div>
-
-
-<p>However, let's say I want to integrate only commits F and G with the C, D, and E from the develop branch. In that case I would use git <em>rebase</em> with --onto option as follows:</p>
-
-<div class="highlight"><pre><code class="text">git rebase --onto &lt;E-sha1&gt; &lt;B-sha1&gt; &lt;G-sha1&gt;
-git checkout -b temp
-git checkout code-review
-git reset --hard temp
-git branch -d temp
-</code></pre>
-</div>
-
-
-<p>The first command basically says <em>move all commits between B (not including it) and G (including it) onto E commit</em>. After <em>rebase</em> is successfully finished the repository should look like this:</p>
-
-<div class="highlight"><pre><code class="text">                       F---G---H code-review
-                      /
-                     /           F---G (no-branch)
-                    /           /
-               A---B---C---D---E---X develop
-</code></pre>
-</div>
-
-
-<p>There is a new (no-branch) HEAD that is in so called <em>detached</em> state.
-In other words it's simply a commit hash which isn't pointed to by a tag or a branch.
-Basically, whenever you check out a non-referenced head, you end up with a detached
-head. In practice some conflicts may arise at this stage. To efficiently resolve them I recommend <a href="https://github.com/jwiegley/git-scripts/blob/master/git-rm-conflicts">git-rm-conflicts</a> script written by John Wiegley.</p>
-
-<p>Next I create <em>'temp'</em> branch to point to detached HEAD, and then checkout to <em>'code-review'</em>. The <em>'code-review'</em> branch pointer is then forcibly moved with <em>git reset --hard temp</em> to point to the same place as <em>'temp'</em>. At the end <em>'temp'</em> branch is deleted
-so final repository should look like this:</p>
-
-<div class="highlight"><pre><code class="text">                                 F---G code-review
-                                /
-               A---B---C---D---E---X develop
-</code></pre>
-</div>
-
-
-<p>And for the end, here is the script that is very handy for reviewing branches and project history:</p>
-
-<div class="highlight"><pre><code class="text">git log &lt;B-sha1&gt;^..HEAD --graph --decorate --pretty=oneline \
-    --abbrev-commit develop code-review some-other-branch
-</code></pre>
-</div>
-
-
-<p>You can add <em>-p</em> to see detailed diffs, leave off <em>--pretty=...</em> to see whole log messages, or tweak it some other way to suit your needs.</p>
-
-
-
-
-    
-        <p> <a href="/blog/2012/09/08/Browse-and-change-code-with-Git.html#disqus_thread" class="comments">View comments</a> </p>
     
 
 

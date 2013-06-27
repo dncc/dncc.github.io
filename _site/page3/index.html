@@ -36,6 +36,128 @@
     
 
     
+<h1> <a href="/blog/2012/04/09/sudoku-solver-in-js.html"> Sudoku Solver in JavaScript </a> </h1>
+
+<div class="date">
+    published: 09 Apr 2012
+</div>
+
+<style type="text/css">
+.sudo-container {
+    width: 500px;
+    display: block;
+}
+
+textarea#grid {
+	  width: 185px;
+	  height: 190px;
+	  border: 2px solid #cccccc;
+	  padding: 5px;
+	  background-position: bottom right;
+	  background-repeat: no-repeat;
+    margin-bottom: 5px;
+    float: left;
+}
+
+#solution{
+  float:left;
+	padding: 5px;
+  margin-left: 15px;
+}
+.sudo-button {
+    border-radius: 2px 2px 2px 2px;
+    cursor: default;
+    font-size: 11px;
+    font-weight: bold;
+    height: 27px;
+    line-height: 27px;
+    margin-right: 16px;
+    min-width: 54px;
+    outline: 0 none;
+    padding: 0 8px;
+    text-align: center;
+}
+
+.sudo-button-action {
+    background-color: #f60; /*4D90FE;*/
+    background-image: -moz-linear-gradient(center top , #f60, #ed4500);
+    border: 1px solid #e50; /*3079ED;*/
+    color: #FFFFFF;
+}
+.sudo-footer {
+  clear: both;
+}
+</style>
+
+
+<script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/underscore-min.js"></script>
+<script src="/js/underscore.string-min.js"></script>
+<script src="/js/underscore.hashmap-min.js"></script>
+<script src="/js/sudoku-min.js"></script>
+
+<script>
+
+$(document).ready(function () {
+
+  $('#grid').val( '1 . . |3 . . |. . . \n'
+                + '8 . . |. . . |. 2 . \n'
+                + '. 7 . |. 1 . |5 . . \n'
+                + '------+------+----- \n'
+                + '4 . . |. . 5 |3 . . \n'
+                + '. 1 . |. 7 . |. . 6 \n'
+                + '. . 3 |2 . . |. 8 . \n'
+                + '------+------+----- \n'
+                + '. 6 . |5 . . |. . 9 \n'
+                + '. . 4 |. . . |. 3 . \n'
+                + '. . . |. . 9 |7 . .' );
+
+  $("#solve-button").click(function(event) {
+
+    $('#solution').hide('slow');
+    $('#status').show('slow');
+
+    var values = sudoku.solve($('#grid').val());
+    if (typeof values == 'undefined') {
+      $('#solution').html("Can't find solution.");
+    } else if (values == false){
+      $('#solution').html("No solution for this setup.");
+    } else {
+      $('#solution').html(sudoku.html(values));
+    }
+
+    $('#status').hide('slow');
+    $('#solution').show('slow');
+    return false;
+  });
+});
+
+</script>
+<div class="sudo-container">
+  <textarea id="grid"> </textarea>
+  <div id="status" style="display:none">solving...</div>
+  <div id="solution" style="display:none;"> </div>
+</div>
+<br/>
+<div class='sudo-footer'>
+<input class='sudo-button sudo-button-action' id='solve-button' type='button' value='Solve'> </input>
+
+</div>
+<br/>
+
+
+
+
+
+    
+        <p> <a href="/blog/2012/04/09/sudoku-solver-in-js.html#disqus_thread" class="comments">View comments</a> </p>
+    
+
+
+
+    
+
+    
 <h1> <a href="/blog/2012/02/19/suspend-and-hibernate-in-arch-linux.html"> Suspend and Hibernate in Arch Linux </a> </h1>
 
 <div class="date">
@@ -151,142 +273,6 @@ alias suspend=&quot;sudo pm-suspend&quot;
 
     
         <p> <a href="/blog/2011/11/12/ruby-quine-blog.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
-
-    
-
-    
-<h1> <a href="/blog/2011/09/18/sudoku-solver-in-ruby.html"> Sudoku solver in Ruby </a> </h1>
-
-<div class="date">
-    published: 18 Sep 2011
-</div>
-
-Being inspired by pure elegance and mastery of <a href="http://norvig.com/sudoku.html">Peter Norvig's sudoku solver</a> which was implemented in Python, I wanted to see what it would look like in Ruby. I also wanted to check if my understanding of the original ideas, data structures and implementation details is good enough to implement them in another language. After I had finished the first Ruby version (you could see it bellow) I found, not surprisingly at all, that the original program is more elegant and easy to read and that it better communicates essential ideas (I don't think this is only because Python has list comprehensions ;)).
-
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">brr</span><span class="p">)</span>
-  <span class="n">arr</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">brr</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">b</span><span class="o">|</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span> <span class="p">}}</span><span class="o">.</span><span class="n">flatten</span>
-<span class="k">end</span>
-
-<span class="no">ROWS</span><span class="p">,</span> <span class="no">DIGITS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;I&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;9&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span>
-<span class="no">COLS</span> <span class="o">=</span> <span class="no">DIGITS</span>
-<span class="no">GSIZE</span> <span class="o">=</span> <span class="no">ROWS</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="no">COLS</span><span class="o">.</span><span class="n">size</span>
-<span class="no">SQUARES</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="no">ROWS</span><span class="p">,</span> <span class="no">COLS</span><span class="p">)</span>
-<span class="no">UNITSARR</span> <span class="o">=</span> <span class="no">COLS</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">cross</span><span class="p">(</span><span class="no">ROWS</span><span class="p">,</span> <span class="o">[</span><span class="n">c</span><span class="o">]</span><span class="p">)</span> <span class="p">}</span> <span class="o">+</span>
-           <span class="no">ROWS</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span> <span class="n">cross</span><span class="p">(</span><span class="o">[</span><span class="n">r</span><span class="o">]</span><span class="p">,</span> <span class="no">COLS</span><span class="p">)</span> <span class="p">}</span> <span class="o">+</span>
-           <span class="o">[</span><span class="s1">&#39;A&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;G&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;I&#39;</span><span class="o">].</span><span class="n">inject</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">arr</span><span class="p">,</span><span class="n">rs</span><span class="o">|</span>
-              <span class="o">[</span><span class="s1">&#39;1&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;6&#39;</span><span class="p">,</span><span class="s1">&#39;7&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;9&#39;</span><span class="o">].</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">cs</span><span class="o">|</span>
-                    <span class="n">arr</span> <span class="o">&lt;&lt;</span> <span class="n">cross</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span> <span class="n">cs</span><span class="p">)</span>
-                 <span class="k">end</span>
-              <span class="n">arr</span>
-           <span class="k">end</span>
-<span class="no">UNITS</span> <span class="o">=</span> <span class="no">SQUARES</span><span class="o">.</span><span class="n">inject</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">s</span><span class="o">|</span>
-           <span class="n">h</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">=</span> <span class="no">UNITSARR</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">u</span><span class="o">|</span> <span class="n">u</span><span class="o">.</span><span class="n">include?</span> <span class="n">s</span><span class="p">}</span><span class="o">.</span><span class="n">flatten</span><span class="p">;</span> <span class="n">h</span>
-        <span class="k">end</span>
-<span class="no">PEERS</span> <span class="o">=</span> <span class="no">SQUARES</span><span class="o">.</span><span class="n">inject</span><span class="p">({}){</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">s</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">=</span> <span class="no">UNITS</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">-</span> <span class="o">[</span><span class="n">s</span><span class="o">]</span><span class="p">;</span> <span class="n">h</span><span class="p">}</span>
-</code></pre>
-</div>
-
-
-Parse the inital sudoku problem:
-
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">parse_grid</span>
-   <span class="n">values</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">[</span><span class="no">SQUARES</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="o">[</span><span class="no">DIGITS</span><span class="o">]</span> <span class="o">*</span> <span class="no">GSIZE</span><span class="p">)</span><span class="o">]</span>
-   <span class="n">grid_values</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">grid</span><span class="o">|</span>
-      <span class="no">Hash</span><span class="o">[*</span><span class="no">SQUARES</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/[^0-9.]/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">chars</span><span class="o">.</span><span class="n">to_a</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="o">]</span>
-   <span class="k">end</span>
-   <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">grid</span><span class="o">|</span>
-      <span class="n">grid_values</span><span class="o">[</span><span class="n">grid</span><span class="o">].</span><span class="n">any?</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="p">,</span><span class="n">d</span><span class="o">|</span>
-         <span class="no">DIGITS</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">assign</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-      <span class="k">end</span> <span class="p">?</span> <span class="kp">false</span> <span class="p">:</span> <span class="n">values</span>
-   <span class="k">end</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-
-Assign the values:
-
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">assign</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-   <span class="p">(</span><span class="o">[</span><span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">]].</span><span class="n">flatten</span> <span class="o">-</span> <span class="o">[</span><span class="n">d</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">all?</span> <span class="k">do</span> <span class="o">|</span><span class="n">d2</span><span class="o">|</span>
-      <span class="n">eliminate</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
-   <span class="k">end</span> <span class="p">?</span> <span class="n">values</span> <span class="p">:</span> <span class="kp">false</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-
-By eliminating non acceptable combinations (recursive method):
-
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">eliminate</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-   <span class="k">return</span> <span class="n">values</span> <span class="k">unless</span> <span class="o">[</span><span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">]].</span><span class="n">flatten</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-   <span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">]].</span><span class="n">flatten</span> <span class="o">-</span> <span class="o">[</span><span class="n">d</span><span class="o">]</span>
-
-   <span class="k">if</span> <span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="n">empty?</span>
-      <span class="k">return</span> <span class="kp">false</span>
-   <span class="k">elsif</span> <span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span>
-      <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="no">PEERS</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="n">all?</span> <span class="k">do</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span>
-         <span class="n">eliminate</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">p</span><span class="p">,</span> <span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
-      <span class="k">end</span>
-   <span class="k">end</span>
-
-   <span class="n">dplaces</span> <span class="o">=</span> <span class="no">UNITS</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="n">include?</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="p">}</span>
-   <span class="k">if</span> <span class="n">dplaces</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
-      <span class="k">return</span> <span class="kp">false</span>
-   <span class="k">end</span>
-   <span class="k">if</span> <span class="n">dplaces</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span>
-      <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="n">assign</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dplaces</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-   <span class="k">end</span>
-
-   <span class="n">values</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-Search for solution:
-
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-   <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="n">values</span>
-   <span class="k">return</span> <span class="n">values</span> <span class="k">unless</span> <span class="n">values</span><span class="o">.</span><span class="n">any?</span><span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span> <span class="p">}</span>
-   <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">find</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
-      <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">values</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
-         <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span>
-      <span class="p">}</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="p">}</span><span class="o">.</span><span class="n">min</span>
-   <span class="k">end</span>
-   <span class="k">return</span> <span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
-      <span class="n">search</span><span class="p">(</span><span class="n">assign</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">dup</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
-   <span class="k">end</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">find</span><span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span> <span class="p">}</span>
-<span class="k">end</span>
-<span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">grid</span><span class="p">);</span> <span class="n">search</span><span class="p">(</span><span class="n">parse_grid</span><span class="o">[</span><span class="n">grid</span><span class="o">]</span><span class="p">);</span> <span class="k">end</span>
-</code></pre>
-</div>
-
-
-And display it:
-
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-   <span class="n">width</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="no">SQUARES</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">values</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="n">size</span> <span class="p">}</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">max</span>
-   <span class="n">line</span> <span class="o">=</span> <span class="o">[[</span> <span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span><span class="o">]</span> <span class="o">*</span> <span class="mi">3</span><span class="o">].</span><span class="n">join</span> <span class="s1">&#39;+&#39;</span>
-   <span class="no">ROWS</span><span class="o">.</span><span class="n">each</span><span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
-      <span class="nb">puts</span> <span class="no">COLS</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">){</span> <span class="o">|</span><span class="n">s</span><span class="p">,</span><span class="n">c</span><span class="o">|</span>
-      <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="n">values</span><span class="o">[</span><span class="n">r</span><span class="o">+</span><span class="n">c</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
-      <span class="o">[</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="o">].</span><span class="n">include?</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="p">?</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;|&#39;</span> <span class="p">:</span> <span class="n">s</span>
-   <span class="p">}</span>
-   <span class="nb">puts</span> <span class="n">line</span> <span class="k">if</span> <span class="o">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="o">].</span><span class="n">include?</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-<span class="p">}</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-
-
-
-
-
-    
-        <p> <a href="/blog/2011/09/18/sudoku-solver-in-ruby.html#disqus_thread" class="comments">View comments</a> </p>
     
 
 

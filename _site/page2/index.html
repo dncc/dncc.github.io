@@ -36,6 +36,118 @@
     
 
     
+<h1> <a href="/blog/2012/09/08/Browse-and-change-code-with-Git.html"> Browse and change code history with Git </a> </h1>
+
+<div class="date">
+    published: 08 Sep 2012
+</div>
+
+<p>Sometimes, if I really want to understand a peace of software, I embark on browsing its whole history available in Git. I usually checkout its initial commit and than slowly make my way through the forest of subsequent commits and branches. If the project is the important one and has live and vibrant community I also consult mailing list archives for the point of time when a particular commit is made. This way, not only that I learn what were the original driving ideas of the current design, but often I gain deep insights about evolution and dynamics of the project .</p>
+
+<p>I'll write now about some Git commands from its time-traveling-and-history-changing toolbox that I use in this setting.</p>
+
+<p>Let's assume the following history exists and the current branch is "develop":</p>
+
+<div class="highlight"><pre><code class="text">               A---B---C---D---E---X develop
+</code></pre>
+</div>
+
+
+<p>Now let's say that I'm on commit B where some particularly complicated algorithm is introduced. As I have hard time understanding the algorithm I write lots of printf's, comments and proof-of-concept code all over the place. Also, I often try to do the same thing that is done in the code differently and sometimes (especially when I make a mistake) I see why the author had chosen the particular way of doing it.</p>
+
+<p>This meta-code helps me to really understand the original source and forces me to learn and adopt good practices and ideas from it. It has a tremendous value for me because if I need to check the algorithm at the point B again I will, hopefully, understand it and know how to reuse it much more quickly with this meta-code explanations. As I want to preserve this for the future I create commits along the way and usually group them in separate 'code-review' branch.</p>
+
+<div class="highlight"><pre><code class="text">git checkout -b code-review &lt;B-sha1&gt;
+</code></pre>
+</div>
+
+
+<p>Next, I write explanatory comments, log messages and tests for commit B in commits F, G, H on the code-review branch so my git repository looks something like this</p>
+
+<div class="highlight"><pre><code class="text">                     F---G---H code-review
+                    /
+               A---B---C---D---E---X develop
+</code></pre>
+</div>
+
+
+<p>When I'm done with reviewing commit B I move further down the main developing line to commits C, D, and E. Let's say the code there consists just of smaller tweaks of the algorithm that is introduced at the point B. I understand everything without need to write additional meta-code and I want to integrate them in my code-review branch so I can move on to another commits down the develop branch.</p>
+
+<p>The easiest way to integrate C, D and E with <em>all</em> previous code-review commits (F, G, H) is to use git <em>rebase</em> command (at this point I would be in 'code-review' branch):</p>
+
+<div class="highlight"><pre><code class="text">git rebase &lt;E-sha1&gt;
+</code></pre>
+</div>
+
+
+<p>So I end up with the following repository:</p>
+
+<div class="highlight"><pre><code class="text">                                 F---G---H code-review
+                                /
+               A---B---C---D---E---X develop
+</code></pre>
+</div>
+
+
+<p>However, let's say I want to integrate only commits F and G with the C, D, and E from the develop branch. In that case I would use git <em>rebase</em> with --onto option as follows:</p>
+
+<div class="highlight"><pre><code class="text">git rebase --onto &lt;E-sha1&gt; &lt;B-sha1&gt; &lt;G-sha1&gt;
+git checkout -b temp
+git checkout code-review
+git reset --hard temp
+git branch -d temp
+</code></pre>
+</div>
+
+
+<p>The first command basically says <em>move all commits between B (not including it) and G (including it) onto E commit</em>. After <em>rebase</em> is successfully finished the repository should look like this:</p>
+
+<div class="highlight"><pre><code class="text">                       F---G---H code-review
+                      /
+                     /           F---G (no-branch)
+                    /           /
+               A---B---C---D---E---X develop
+</code></pre>
+</div>
+
+
+<p>There is a new (no-branch) HEAD that is in so called <em>detached</em> state.
+In other words it's simply a commit hash which isn't pointed to by a tag or a branch.
+Basically, whenever you check out a non-referenced head, you end up with a detached
+head. In practice some conflicts may arise at this stage. To efficiently resolve them I recommend <a href="https://github.com/jwiegley/git-scripts/blob/master/git-rm-conflicts">git-rm-conflicts</a> script written by John Wiegley.</p>
+
+<p>Next I create <em>'temp'</em> branch to point to detached HEAD, and then checkout to <em>'code-review'</em>. The <em>'code-review'</em> branch pointer is then forcibly moved with <em>git reset --hard temp</em> to point to the same place as <em>'temp'</em>. At the end <em>'temp'</em> branch is deleted
+so final repository should look like this:</p>
+
+<div class="highlight"><pre><code class="text">                                 F---G code-review
+                                /
+               A---B---C---D---E---X develop
+</code></pre>
+</div>
+
+
+<p>And for the end, here is the script that is very handy for reviewing branches and project history:</p>
+
+<div class="highlight"><pre><code class="text">git log &lt;B-sha1&gt;^..HEAD --graph --decorate --pretty=oneline \
+    --abbrev-commit develop code-review some-other-branch
+</code></pre>
+</div>
+
+
+<p>You can add <em>-p</em> to see detailed diffs, leave off <em>--pretty=...</em> to see whole log messages, or tweak it some other way to suit your needs.</p>
+
+
+
+
+    
+        <p> <a href="/blog/2012/09/08/Browse-and-change-code-with-Git.html#disqus_thread" class="comments">View comments</a> </p>
+    
+
+
+
+    
+
+    
 <h1> <a href="/blog/2012/06/09/Rotate-Log-Files-in-Rails-3.2.html"> Rotate Log Files in Rails 3.2 </a> </h1>
 
 <div class="date">
@@ -147,128 +259,6 @@ CMD INSTALL ~/downloads/rjags_3-2.tar.gz
 
     
         <p> <a href="/blog/2012/05/26/Installing-JAGS-and-rjags-on-arch.html#disqus_thread" class="comments">View comments</a> </p>
-    
-
-
-
-    
-
-    
-<h1> <a href="/blog/2012/04/09/sudoku-solver-in-js.html"> Sudoku Solver in JavaScript </a> </h1>
-
-<div class="date">
-    published: 09 Apr 2012
-</div>
-
-<style type="text/css">
-.sudo-container {
-    width: 500px;
-    display: block;
-}
-
-textarea#grid {
-	  width: 185px;
-	  height: 190px;
-	  border: 2px solid #cccccc;
-	  padding: 5px;
-	  background-position: bottom right;
-	  background-repeat: no-repeat;
-    margin-bottom: 5px;
-    float: left;
-}
-
-#solution{
-  float:left;
-	padding: 5px;
-  margin-left: 15px;
-}
-.sudo-button {
-    border-radius: 2px 2px 2px 2px;
-    cursor: default;
-    font-size: 11px;
-    font-weight: bold;
-    height: 27px;
-    line-height: 27px;
-    margin-right: 16px;
-    min-width: 54px;
-    outline: 0 none;
-    padding: 0 8px;
-    text-align: center;
-}
-
-.sudo-button-action {
-    background-color: #f60; /*4D90FE;*/
-    background-image: -moz-linear-gradient(center top , #f60, #ed4500);
-    border: 1px solid #e50; /*3079ED;*/
-    color: #FFFFFF;
-}
-.sudo-footer {
-  clear: both;
-}
-</style>
-
-
-<script src="/js/jquery-1.7.2.min.js"></script>
-<script src="/js/underscore-min.js"></script>
-<script src="/js/underscore.string-min.js"></script>
-<script src="/js/underscore.hashmap-min.js"></script>
-<script src="/js/sudoku-min.js"></script>
-
-<script>
-
-$(document).ready(function () {
-
-  $('#grid').val( '1 . . |3 . . |. . . \n'
-                + '8 . . |. . . |. 2 . \n'
-                + '. 7 . |. 1 . |5 . . \n'
-                + '------+------+----- \n'
-                + '4 . . |. . 5 |3 . . \n'
-                + '. 1 . |. 7 . |. . 6 \n'
-                + '. . 3 |2 . . |. 8 . \n'
-                + '------+------+----- \n'
-                + '. 6 . |5 . . |. . 9 \n'
-                + '. . 4 |. . . |. 3 . \n'
-                + '. . . |. . 9 |7 . .' );
-
-  $("#solve-button").click(function(event) {
-
-    $('#solution').hide('slow');
-    $('#status').show('slow');
-
-    var values = sudoku.solve($('#grid').val());
-    if (typeof values == 'undefined') {
-      $('#solution').html("Can't find solution.");
-    } else if (values == false){
-      $('#solution').html("No solution for this setup.");
-    } else {
-      $('#solution').html(sudoku.html(values));
-    }
-
-    $('#status').hide('slow');
-    $('#solution').show('slow');
-    return false;
-  });
-});
-
-</script>
-<div class="sudo-container">
-  <textarea id="grid"> </textarea>
-  <div id="status" style="display:none">solving...</div>
-  <div id="solution" style="display:none;"> </div>
-</div>
-<br/>
-<div class='sudo-footer'>
-<input class='sudo-button sudo-button-action' id='solve-button' type='button' value='Solve'> </input>
-
-</div>
-<br/>
-
-
-
-
-
-    
-        <p> <a href="/blog/2012/04/09/sudoku-solver-in-js.html#disqus_thread" class="comments">View comments</a> </p>
     
 
 
